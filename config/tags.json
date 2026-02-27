@@ -1,0 +1,7 @@
+﻿{
+  "tags": [
+    {"name": "safety", "aliases": ["HSE", "veiligheid"]},
+    {"name": "quality", "aliases": ["QA", "kwaliteit"]},
+    {"name": "lab", "aliases": ["labo", "laboratory"]}
+  ]
+}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="get" action="/">
+    <input type="text" name="q" value="{{ query }}" placeholder="Zoekterm (bijv. PCR AND calibratie)">
+    <button type="submit">Zoek</button>
+</form>
+
+{% if query %}
+    <h2>Resultaten voor: "{{ query }}"</h2>
+    {% if results %}
+        <ul>
+        {% for r in results %}
+            <li>
+                <a href="{{ url_for('doc_detail', doc_id=r.id) }}">{{ r.title or r.path }}</a><br>
+                <small>Tags: {{ r.tags }} | Projecten: {{ r.project_codes }} | Samples: {{ r.sample_ids }}</small><br>
+                <small>{{ r.summary }}</small>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Geen resultaten gevonden.</p>
+    {% endif %}
+{% endif %}
+{% endblock %}

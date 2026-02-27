@@ -1,0 +1,7 @@
+﻿{
+  "patterns": [
+    {"tag": "safety", "regex": "(?i)hse|veiligheid|safety"},
+    {"tag": "quality", "regex": "(?i)qa|kwaliteit|quality"},
+    {"tag": "lab", "regex": "(?i)labo|laboratory|lab"}
+  ]
+}
