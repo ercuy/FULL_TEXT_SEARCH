@@ -1,12 +1,51 @@
 ﻿# =====================================================================
 # BEGIN file: core/search_api.py
 # =====================================================================
+# from typing import List, Dict, Any
+
+# import sqlite3
+
+# from .config import load_settings
+
+
+# def _connect() -> sqlite3.Connection:
+#     settings = load_settings()
+#     conn = sqlite3.connect(settings.paths.index_db)
+#     conn.row_factory = sqlite3.Row
+#     return conn
+
+
+# def search(query: str, limit: int = 50) -> List[Dict[str, Any]]:
+#     """
+#     Full-text search via FTS5 + ophalen metadata.
+#     """
+#     settings = load_settings()
+#     limit = min(limit, settings.ui.max_results)
+
+#     conn = _connect()
+#     try:
+#         cur = conn.cursor()
+#         cur.execute(
+#             """
+#             SELECT f.id, f.path, f.title, f.tags, f.summary, f.dates,
+#                    f.project_codes, f.sample_ids
+#             FROM files f
+#             JOIN files_fts ft ON f.id = ft.rowid
+#             WHERE files_fts MATCH ?
+#             ORDER BY rank
+#             LIMIT ?
+#             """,
+#             (query, limit),
+#         )
+#         rows = cur.fetchall()
+#         return [dict(r) for r in rows]
+#     finally:
+#         conn.close()
+
+# core/search_api.py  (PATCH)
 from typing import List, Dict, Any
-
 import sqlite3
-
 from .config import load_settings
-
 
 def _connect() -> sqlite3.Connection:
     settings = load_settings()
@@ -14,31 +53,26 @@ def _connect() -> sqlite3.Connection:
     conn.row_factory = sqlite3.Row
     return conn
 
-
 def search(query: str, limit: int = 50) -> List[Dict[str, Any]]:
-    """
-    Full-text search via FTS5 + ophalen metadata.
-    """
     settings = load_settings()
     limit = min(limit, settings.ui.max_results)
-
     conn = _connect()
     try:
         cur = conn.cursor()
         cur.execute(
             """
             SELECT f.id, f.path, f.title, f.tags, f.summary, f.dates,
-                   f.project_codes, f.sample_ids
+                   f.project_codes, f.sample_ids,
+                   bm25(ft) AS score
             FROM files f
             JOIN files_fts ft ON f.id = ft.rowid
-            WHERE files_fts MATCH ?
-            ORDER BY rank
+            WHERE ft MATCH ?
+            ORDER BY score
             LIMIT ?
             """,
             (query, limit),
         )
-        rows = cur.fetchall()
-        return [dict(r) for r in rows]
+        return [dict(r) for r in cur.fetchall()]
     finally:
         conn.close()
 

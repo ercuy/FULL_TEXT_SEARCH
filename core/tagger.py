@@ -41,10 +41,36 @@ def extract_tags(text: str) -> List[str]:
     return tags[: settings.tags.max_tags_per_document]
 
 
+# def extract_patterns(text: str) -> Dict[str, Any]:
+#     """
+#     Regex-gebaseerde extractie van projectcodes, sample-ID's, datums.
+#     """
+#     settings = load_settings()
+#     patterns = {
+#         "project_code": settings.patterns.project_code,
+#         "sample_id": settings.patterns.sample_id,
+#         "date": settings.patterns.date,
+#     }
+
+#     result: Dict[str, Any] = {}
+#     for key, pattern in patterns.items():
+#         matches = re.findall(pattern, text)
+#         if matches:
+#             # Uniek maken, maar volgorde behouden
+#             seen = set()
+#             unique = []
+#             for m in matches:
+#                 val = m if isinstance(m, str) else m[0]
+#                 if val not in seen:
+#                     seen.add(val)
+#                     unique.append(val)
+#             result[key] = unique
+#     return result
+
+
+
+# core/tagger.py (PATCH: fix vroegtijdige return)
 def extract_patterns(text: str) -> Dict[str, Any]:
-    """
-    Regex-gebaseerde extractie van projectcodes, sample-ID's, datums.
-    """
     settings = load_settings()
     patterns = {
         "project_code": settings.patterns.project_code,
@@ -56,7 +82,6 @@ def extract_patterns(text: str) -> Dict[str, Any]:
     for key, pattern in patterns.items():
         matches = re.findall(pattern, text)
         if matches:
-            # Uniek maken, maar volgorde behouden
             seen = set()
             unique = []
             for m in matches:
@@ -65,4 +90,5 @@ def extract_patterns(text: str) -> Dict[str, Any]:
                     seen.add(val)
                     unique.append(val)
             result[key] = unique
+
     return result

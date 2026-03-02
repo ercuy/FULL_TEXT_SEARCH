@@ -1,11 +1,15 @@
 {
   "version": "1.0",
+
   "paths": {
-    "root_locations": ["C:\\TEMP\\fts_testdocs"],
-    "scanned_folder": "C:\\TEMP\\fts_testdocs\\_gescand",
-    "index_db": "index\\index.db",
+    "root_locations": [
+      "\\\\server\\share\\labo_docs"
+    ],
+    "scanned_folder": "\\\\server\\share\\labo_docs\\_gescand",
+    "index_db": "index/index.db",
     "log_folder": "logs"
   },
+
   "file_handling": {
     "allowed_extensions": ["pdf"],
     "min_text_length": 20,
@@ -15,8 +19,20 @@
       "check_xobjects": true
     }
   },
+
   "tags": {
-    "vocabulary": ["PCR", "QC", "calibratie", "audit", "ISO", "sample", "project", "toestel", "procedure", "rapport"],
+    "vocabulary": [
+      "PCR",
+      "QC",
+      "calibratie",
+      "audit",
+      "ISO",
+      "sample",
+      "project",
+      "toestel",
+      "procedure",
+      "rapport"
+    ],
     "synonyms": {
       "quality control": "QC",
       "calibration": "calibratie",
@@ -25,22 +41,26 @@
     },
     "max_tags_per_document": 5
   },
+
   "patterns": {
     "project_code": "PRJ-[0-9]{4}-[0-9]{2}",
     "sample_id": "SMP[0-9]{4}",
     "date": "\\b(\\d{4}-\\d{2}-\\d{2}|\\d{2}/\\d{2}/\\d{4})\\b"
   },
+
   "summaries": {
     "enabled": true,
     "max_sentences": 3,
     "use_ai_compression": false,
     "language_detection": true
   },
+
   "indexing": {
-    "batch_size": 10,
+    "batch_size": 100,
     "fts5_enabled": true,
     "update_existing": true
   },
+
   "ui": {
     "type": "html",
     "preview_enabled": true,

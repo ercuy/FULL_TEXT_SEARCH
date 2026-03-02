@@ -89,24 +89,45 @@ def _upsert_file(conn: sqlite3.Connection, record: Dict[str, Any]) -> int:
     ).fetchone()[0]
 
 
+# def _update_fts(conn: sqlite3.Connection, record: Dict[str, Any]) -> None:
+#     conn.execute(
+#         """
+#         INSERT INTO files_fts (rowid, content, tags, summary, path)
+#         VALUES (
+#             (SELECT id FROM files WHERE path = :path),
+#             :content,
+#             :tags,
+#             :summary,
+#             :path
+#         )
+#         ON CONFLICT(rowid) DO UPDATE SET
+#             content=excluded.content,
+#             tags=excluded.tags,
+#             summary=excluded.summary,
+#             path=excluded.path
+#         """,
+#         record,
+#     )
+#     conn.commit()
+
+# core/indexer.py  (PATCH: vervang _update_fts)
 def _update_fts(conn: sqlite3.Connection, record: Dict[str, Any]) -> None:
+    # haal id uit metadata-table
+    row = conn.execute("SELECT id FROM files WHERE path = ?", (record["path"],)).fetchone()
+    if not row:
+        return
+    doc_id = row[0]
+
+    # delete bestaande FTS-row (FTS5 command)
+    conn.execute("INSERT INTO files_fts(files_fts, rowid) VALUES('delete', ?)", (doc_id,))
+
+    # insert nieuwe content
     conn.execute(
         """
-        INSERT INTO files_fts (rowid, content, tags, summary, path)
-        VALUES (
-            (SELECT id FROM files WHERE path = :path),
-            :content,
-            :tags,
-            :summary,
-            :path
-        )
-        ON CONFLICT(rowid) DO UPDATE SET
-            content=excluded.content,
-            tags=excluded.tags,
-            summary=excluded.summary,
-            path=excluded.path
+        INSERT INTO files_fts(rowid, content, tags, summary, path)
+        VALUES (?, ?, ?, ?, ?)
         """,
-        record,
+        (doc_id, record["content"], record["tags"], record["summary"], record["path"]),
     )
     conn.commit()
 
