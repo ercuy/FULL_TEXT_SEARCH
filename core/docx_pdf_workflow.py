@@ -72,6 +72,10 @@ def find_missing_pdfs(root: str):
 
     # for path in root.rglob("*"):
     for path in root.glob("*"):
+        # sla Office tijdelijke bestanden over
+        if path.name.startswith("~$"):
+            continue
+
         if path.suffix.lower() in [".doc", ".docx"]:
             expected_pdf = path.with_suffix(".pdf")
             if not expected_pdf.exists():

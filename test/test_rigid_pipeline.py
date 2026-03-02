@@ -2,6 +2,9 @@ import sqlite3
 
 from core.indexer import index_all
 from core.search_api import search
+from test.conftest import _make_pdf
+# from test.conftest import _make_pdf
+
 
 def test_fts5_available():
     cx = sqlite3.connect(":memory:")
@@ -24,3 +27,14 @@ def test_rigid_pipeline_index_then_search(rig):
     # 4) pattern extractie: project + sample moeten er zijn (na fix in tagger.py)
     assert "PRJ-2026-01" in (doc1.get("project_codes") or "")
     assert "SMP1234" in (doc1.get("sample_ids") or "")
+
+
+def test_non_recursive_scope(rig):
+    # maak subfolder met pdf
+    sub = rig["docs"] / "sub"
+    sub.mkdir()
+    _make_pdf(sub / "hidden.pdf", "PCR should NOT be indexed")
+
+    index_all()
+    hits = search("hidden")
+    assert len(hits) == 0 

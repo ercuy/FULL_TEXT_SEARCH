@@ -289,3 +289,39 @@ Flask en pypdf. Geen cloud, geen vendor lock-in.
 ---
 
 Wil je dat ik ook een sanity‑test checklist maak om de eerste run te valideren (index initialiseren, UI testen, sample‑PDF’s controleren)?
+
+
+
+Stap 2 — Run de indexer bewust
+Vanuit je project root:
+
+
+(.venv) PS C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH> 
+python -m core.indexer              (door ontbreken van main geen actie, is bekende pit fall)
+
+
+(.venv) PS C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH> python
+>>> from core.indexer import index_all
+>>> index_all()
+
+
+Wat je nu moet zien:
+
+[INDEX] Database initialized
+[INDEX] Processing K:\KWLAB\analyseverslagen\....pdf
+[INDEX] Completed indexing
+
+Daarna:
+
+index/index.db niet leeg
+SQLite Browser toont rijen in files en files_fts
+
+✅ Dit is de snelste en correcte manier met je huidige code.
+
+
+
+
+
+UI starten
+
+ python -m ui.app     

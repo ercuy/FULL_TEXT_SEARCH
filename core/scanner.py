@@ -8,13 +8,35 @@ from typing import Iterator, Dict, Any, List
 from .config import load_settings
 from .extractor import extract_text_basic, has_text_objects
 
+EXCLUDE_PREFIXES = ("~$", "old_")
+EXCLUDE_SUFFIXES = ("_draft.pdf",)
+
+def _is_excluded(filename: str) -> bool:
+    name = filename.lower()
+    if name.startswith(EXCLUDE_PREFIXES):
+        return True
+    if name.endswith(EXCLUDE_SUFFIXES):
+        return True
+    return False
+
 
 def iter_files(root_locations: List[str], allowed_extensions: List[str]) -> Iterator[str]:
     for root in root_locations:
         if not os.path.exists(root):
             continue
+        # for dirpath, _, filenames in os.walk(root):
+            # for name in filenames:
+            #     ext = os.path.splitext(name)[1].lower().lstrip(".")
+            #     if ext in allowed_extensions:
+            #         yield os.path.join(dirpath, name)
+            
         for dirpath, _, filenames in os.walk(root):
+            if os.path.abspath(dirpath) != os.path.abspath(root):
+                continue
+
             for name in filenames:
+                if _is_excluded(name):
+                    continue
                 ext = os.path.splitext(name)[1].lower().lstrip(".")
                 if ext in allowed_extensions:
                     yield os.path.join(dirpath, name)

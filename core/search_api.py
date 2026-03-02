@@ -62,16 +62,29 @@ def search(query: str, limit: int = 50) -> List[Dict[str, Any]]:
         cur.execute(
             """
             SELECT f.id, f.path, f.title, f.tags, f.summary, f.dates,
-                   f.project_codes, f.sample_ids,
-                   bm25(ft) AS score
-            FROM files f
-            JOIN files_fts ft ON f.id = ft.rowid
-            WHERE ft MATCH ?
+                f.project_codes, f.sample_ids,
+                bm25(files_fts) AS score
+            FROM files AS f
+            JOIN files_fts AS ft ON f.id = ft.rowid
+            WHERE files_fts MATCH ?
             ORDER BY score
             LIMIT ?
             """,
             (query, limit),
-        )
+    )
+        # cur.execute(
+        #     """
+        #     SELECT f.id, f.path, f.title, f.tags, f.summary, f.dates,
+        #            f.project_codes, f.sample_ids,
+        #            bm25(ft) AS score
+        #     FROM files f
+        #     JOIN files_fts ft ON f.id = ft.rowid
+        #     WHERE ft MATCH ?
+        #     ORDER BY score
+        #     LIMIT ?
+        #     """,
+        #     (query, limit),
+        # )
         return [dict(r) for r in cur.fetchall()]
     finally:
         conn.close()

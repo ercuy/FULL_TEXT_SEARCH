@@ -1,24 +1,102 @@
 {% extends "base.html" %}
 {% block content %}
+
 <form method="get" action="/">
-    <input type="text" name="q" value="{{ query }}" placeholder="Zoekterm (bijv. PCR AND calibratie)">
-    <button type="submit">Zoek</button>
+  <input type="text" name="q" value="{{ query }}" placeholder="Zoekterm (bijv. PCR AND calibratie)">
+  <button type="submit">Zoek</button>
 </form>
 
 {% if query %}
-    <h2>Resultaten voor: "{{ query }}"</h2>
-    {% if results %}
-        <ul>
-        {% for r in results %}
-            <li>
-                <a href="{{ url_for('doc_detail', doc_id=r.id) }}">{{ r.title or r.path }}</a><br>
-                <small>Tags: {{ r.tags }} | Projecten: {{ r.project_codes }} | Samples: {{ r.sample_ids }}</small><br>
-                <small>{{ r.summary }}</small>
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>Geen resultaten gevonden.</p>
-    {% endif %}
+  <h2>Resultaten voor: "{{ query }}"</h2>
+
+  {% if results %}
+    <div style="margin: 0.75rem 0;">
+      <button type="button" onclick="selectAll(true)">Selecteer alles</button>
+      <button type="button" onclick="selectAll(false)">Selecteer niets</button>
+      <button type="button" onclick="downloadZip()">Download ZIP (max 25)</button>
+      <span style="margin-left: 0.75rem;">
+        Geselecteerd: <strong id="selCount">0</strong>
+      </span>
+    </div>
+
+    <ul>
+      {% for r in results %}
+        <li style="display:flex; gap:0.6rem; align-items:flex-start; padding:0.4rem 0;">
+          <input
+            type="checkbox"
+            class="zipPick"
+            data-path="{{ r.path }}"
+            onchange="updateCount()"
+            aria-label="Selecteer voor ZIP"
+          >
+          <div>
+            <a href="{{ url_for('doc_detail', doc_id=r.id) }}">{{ r.title or r.path }}</a><br>
+            <small>
+              Tags: {{ r.tags }} |
+              Projecten: {{ r.project_codes }} |
+              Samples: {{ r.sample_ids }}
+            </small><br>
+            <small>{{ r.summary }}</small>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <script>
+      function getSelectedPaths() {
+        const boxes = Array.from(document.querySelectorAll(".zipPick"));
+        return boxes.filter(b => b.checked).map(b => b.dataset.path);
+      }
+
+      function updateCount() {
+        const n = getSelectedPaths().length;
+        document.getElementById("selCount").textContent = String(n);
+      }
+
+      function selectAll(flag) {
+        const boxes = document.querySelectorAll(".zipPick");
+        boxes.forEach(b => b.checked = flag);
+        updateCount();
+      }
+
+      async function downloadZip() {
+        const files = getSelectedPaths();
+        if (files.length === 0) {
+          alert("Geen documenten geselecteerd.");
+          return;
+        }
+        if (files.length > 25) {
+          alert("Max 25 documenten per ZIP. Maak een kleinere selectie.");
+          return;
+        }
+
+        const res = await fetch("/zip", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({files})
+        });
+
+        if (!res.ok) {
+          const msg = await res.text();
+          alert("ZIP fout: " + msg);
+          return;
+        }
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "documents.zip";
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      // init count on load
+      updateCount();
+    </script>
+  {% else %}
+    <p>Geen resultaten gevonden.</p>
+  {% endif %}
 {% endif %}
+
 {% endblock %}

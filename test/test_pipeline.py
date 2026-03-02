@@ -33,3 +33,15 @@ def test_full_pipeline():
     # 4. Verwachtingen (DIT IS DE TEST)
     assert len(results) > 0
     assert any("doc1.pdf" in r["path"] for r in results)
+
+
+def test_metadata_quality(rig):
+    index_all()
+    hits = search("PCR")
+    doc = hits[0]
+
+    assert doc["title"]
+    assert doc["summary"]
+    assert isinstance(doc["tags"], str)
+    assert "PRJ-2026-01" in (doc.get("project_codes") or "")
+    assert "SMP1234" in (doc.get("sample_ids") or "")

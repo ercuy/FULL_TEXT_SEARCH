@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8">
+    <title>Zoekhulp – Labo Documentenzoeker</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            margin: 2rem;
+            max-width: 900px;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: #123a5f;
+        }
+        code, pre {
+            background: #f4f6f8;
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+        }
+        pre {
+            padding: 0.8rem;
+            overflow-x: auto;
+        }
+        .tip {
+            background: #eef5ff;
+            border-left: 4px solid #3b82f6;
+            padding: 0.8rem;
+            margin: 1rem 0;
+        }
+        .warn {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            padding: 0.8rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Zoekhulp – Geavanceerd zoeken</h1>
+
+<p>
+Deze pagina beschrijft <strong>alle zoekmogelijkheden die momenteel ondersteund worden</strong>
+in de <em>Labo Documentenzoeker</em>.
+De zoekmachine is gebaseerd op <strong>SQLite FTS5</strong> (Full‑Text Search).
+</p>
+
+<hr>
+
+<h2>1. Basisprincipe</h2>
+
+<p>
+Alles wat je in het zoekveld typt, wordt rechtstreeks geïnterpreteerd als een zoekopdracht.
+Spaties betekenen standaard <strong>EN</strong>.
+</p>
+
+<pre>D3104 viscosity</pre>
+
+<p>Betekent:</p>
+
+<pre>D3104 AND viscosity</pre>
+
+<div class="tip">
+Zoeken is <strong>niet hoofdlettergevoelig</strong>.
+</div>
+
+<hr>
+
+<h2>2. Logische operatoren</h2>
+
+<h3>EN (AND)</h3>
+<pre>D3104 AND viscosity</pre>
+
+<h3>OF (OR)</h3>
+<pre>D3104 OR D5776</pre>
+
+<h3>NIET (NOT)</h3>
+<pre>D3104 NOT draft</pre>
+
+<hr>
+
+<h2>3. Groeperen met haakjes</h2>
+
+<p>
+Gebruik haakjes om complexere logica te maken.
+</p>
+
+<pre>(D3104 OR D5776) AND (viscosity OR "kinematic viscosity")</pre>
+
+<hr>
+
+<h2>4. Exacte woordgroepen (phrase search)</h2>
+
+<p>
+Gebruik dubbele aanhalingstekens om een exacte zin te zoeken.
+</p>
+
+<pre>"certificate of analysis"</pre>
+
+<hr>
+
+<h2>5. Prefix / wildcard zoeken</h2>
+
+<p>
+Gebruik <code>*</code> om te zoeken op het begin van een woord.
+</p>
+
+<pre>visco*</pre>
+
+<p>Vindt o.a.: viscosity, viscosimeter, viscous.</p>
+
+<hr>
+
+<h2>6. Zoeken op nabijheid (NEAR)</h2>
+
+<p>
+Met <code>NEAR</code> zoek je termen die dicht bij elkaar staan in de tekst.
+</p>
+
+<pre>D3104 NEAR viscosity</pre>
+
+<hr>
+
+<h2>7. Combinaties (power search)</h2>
+
+<h3>ASTM + certificaat</h3>
+<pre>(D3104 OR D445) AND (COA OR "certificate of analysis")</pre>
+
+<h3>Ruis uitsluiten</h3>
+<pre>D3104 AND viscosity NOT (draft OR template OR voorbeeld)</pre>
+
+<h3>Leverancier + product</h3>
+<pre>(Rutgers OR KRUESS) AND (pitch OR pek OR naphthalene)</pre>
+
+<hr>
+
+<h2>8. Wat bewust niet ondersteund is</h2>
+
+<div class="warn">
+Om deterministisch en audit‑proof te blijven, zijn volgende functies niet actief:
+<ul>
+    <li>fuzzy / approximate search</li>
+    <li>spellingscorrectie</li>
+    <li>AI‑interpretatie of semantische zoekacties</li>
+</ul>
+</div>
+
+<hr>
+
+<h2>9. Praktische tips</h2>
+
+<ul>
+    <li>Begin breed, verfijn daarna</li>
+    <li>Gebruik quotes bij te veel resultaten</li>
+    <li>Gebruik <code>OR</code> voor normen, <code>AND</code> voor eigenschappen</li>
+    <li>Gebruik <code>NOT</code> om ruis te verwijderen</li>
+</ul>
+
+<hr>
+
+<p>
+<strong>De interface blijft eenvoudig — de kracht zit in de zoekopdracht.</strong>
+</p>
+
+</body>
+</html>

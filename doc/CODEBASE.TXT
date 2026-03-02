@@ -1,0 +1,2641 @@
+﻿### SCHEMA = 
+FULL_TEXT_SEARCH/
+|-- config/
+|   |-- patterns.json
+|   |-- settings.json
+|   |-- settings0.json
+|   \-- tags.json
+|-- core/
+|   |-- __init__.py
+|   |-- config.py
+|   |-- docx_pdf_workflow.py
+|   |-- extractor.py
+|   |-- indexer.py
+|   |-- scanner.py
+|   |-- search_api.py
+|   |-- summarizer.py
+|   \-- tagger.py
+|-- doc/
+|-- index/
+|-- logs/
+|-- test/
+|   |-- __init__.py
+|   |-- conftest.py
+|   |-- test_pipeline.py
+|   |-- test_pipeline_strict.py
+|   |-- test_rigid_pipeline.py
+|   \-- test_ui_zip.py
+|-- ui/
+|   |-- static/
+|   |   \-- style.css
+|   |-- templates/
+|   |   |-- base.html
+|   |   |-- detail.html
+|   |   \-- search.html
+|   \-- app.py
+|-- missing_docs.html
+\-- missing_docs.json
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\config\patterns.json
+
+001   {
+002     "patterns": [
+003       {"tag": "safety", "regex": "(?i)hse|veiligheid|safety"},
+004       {"tag": "quality", "regex": "(?i)qa|kwaliteit|quality"},
+005       {"tag": "lab", "regex": "(?i)labo|laboratory|lab"}
+006     ]
+007   }
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\config\settings.json
+
+001   {
+002     "version": "1.0",
+003     "paths": {
+004       "root_locations": ["K:\\KWLAB\\analyseverslagen"],
+005       "scanned_folder": "K:\\KWLAB\\analyseverslagen\\_gescand",
+006       "index_db": "index\\index.db",
+007       "log_folder": "logs"
+008     },
+009     "file_handling": {
+010       "allowed_extensions": ["pdf"],
+011       "min_text_length": 20,
+012       "detect_scanned_pdf": {
+013         "check_text_length": true,
+014         "check_fonts": true,
+015         "check_xobjects": true
+016       }
+017     },
+018     "tags": {
+019       "vocabulary": ["PCR", "QC", "calibratie", "audit", "ISO", "CO2", "sample", "project", "toestel", "procedure", "rapport"],
+020       "synonyms": {
+021         "quality control": "QC",
+022         "calibration": "calibratie",
+023         "instrument": "toestel",
+024         "report": "rapport"
+025       },
+026       "max_tags_per_document": 5
+027     },
+028     "patterns": {
+029       "project_code": "PRJ-[0-9]{4}-[0-9]{2}",
+030       "sample_id": "SMP[0-9]{4}",
+031       "date": "\\b(\\d{4}-\\d{2}-\\d{2}|\\d{2}/\\d{2}/\\d{4})\\b"
+032     },
+033     "summaries": {
+034       "enabled": true,
+035       "max_sentences": 3,
+036       "use_ai_compression": false,
+037       "language_detection": true
+038     },
+039     "indexing": {
+040       "batch_size": 10,
+041       "fts5_enabled": true,
+042       "update_existing": true
+043     },
+044     "ui": {
+045       "type": "html",
+046       "preview_enabled": true,
+047       "filters_enabled": true,
+048       "max_results": 200
+049     }
+050   }
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\config\settings0.json
+
+001   {
+002     "version": "1.0",
+003   
+004     "paths": {
+005       "root_locations": [
+006         "\\\\server\\share\\labo_docs"
+007       ],
+008       "scanned_folder": "\\\\server\\share\\labo_docs\\_gescand",
+009       "index_db": "index/index.db",
+010       "log_folder": "logs"
+011     },
+012   
+013     "file_handling": {
+014       "allowed_extensions": ["pdf"],
+015       "min_text_length": 20,
+016       "detect_scanned_pdf": {
+017         "check_text_length": true,
+018         "check_fonts": true,
+019         "check_xobjects": true
+020       }
+021     },
+022   
+023     "tags": {
+024       "vocabulary": [
+025         "PCR",
+026         "QC",
+027         "calibratie",
+028         "audit",
+029         "ISO",
+030         "sample",
+031         "project",
+032         "toestel",
+033         "procedure",
+034         "rapport"
+035       ],
+036       "synonyms": {
+037         "quality control": "QC",
+038         "calibration": "calibratie",
+039         "instrument": "toestel",
+040         "report": "rapport"
+041       },
+042       "max_tags_per_document": 5
+043     },
+044   
+045     "patterns": {
+046       "project_code": "PRJ-[0-9]{4}-[0-9]{2}",
+047       "sample_id": "SMP[0-9]{4}",
+048       "date": "\\b(\\d{4}-\\d{2}-\\d{2}|\\d{2}/\\d{2}/\\d{4})\\b"
+049     },
+050   
+051     "summaries": {
+052       "enabled": true,
+053       "max_sentences": 3,
+054       "use_ai_compression": false,
+055       "language_detection": true
+056     },
+057   
+058     "indexing": {
+059       "batch_size": 100,
+060       "fts5_enabled": true,
+061       "update_existing": true
+062     },
+063   
+064     "ui": {
+065       "type": "html",
+066       "preview_enabled": true,
+067       "filters_enabled": true,
+068       "max_results": 200
+069     }
+070   }
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\config\tags.json
+
+001   {
+002     "tags": [
+003       {"name": "safety", "aliases": ["HSE", "veiligheid"]},
+004       {"name": "quality", "aliases": ["QA", "kwaliteit"]},
+005       {"name": "lab", "aliases": ["labo", "laboratory"]}
+006     ]
+007   }
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\core\__init__.py
+
+# [WAARSCHUWING] Kon inhoud niet lezen: C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\core\__init__.py
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\core\config.py
+
+001   # =====================================================================
+002   # BEGIN file: core/config.py
+003   # =====================================================================
+004   import json
+005   import os
+006   from dataclasses import dataclass
+007   from typing import List, Dict, Any
+008   
+009   
+010   CONFIG_PATH = os.path.join(
+011       os.path.dirname(os.path.dirname(__file__)),
+012       "config",
+013       "settings.json"
+014   )
+015   
+016   
+017   @dataclass
+018   class PathsConfig:
+019       root_locations: List[str]
+020       scanned_folder: str
+021       index_db: str
+022       log_folder: str
+023   
+024   
+025   @dataclass
+026   class FileHandlingConfig:
+027       allowed_extensions: List[str]
+028       min_text_length: int
+029       detect_scanned_pdf: Dict[str, bool]
+030   
+031   
+032   @dataclass
+033   class TagsConfig:
+034       vocabulary: List[str]
+035       synonyms: Dict[str, str]
+036       max_tags_per_document: int
+037   
+038   
+039   @dataclass
+040   class PatternsConfig:
+041       project_code: str
+042       sample_id: str
+043       date: str
+044   
+045   
+046   @dataclass
+047   class SummariesConfig:
+048       enabled: bool
+049       max_sentences: int
+050       use_ai_compression: bool
+051       language_detection: bool
+052   
+053   
+054   @dataclass
+055   class IndexingConfig:
+056       batch_size: int
+057       fts5_enabled: bool
+058       update_existing: bool
+059   
+060   
+061   @dataclass
+062   class UiConfig:
+063       type: str
+064       preview_enabled: bool
+065       filters_enabled: bool
+066       max_results: int
+067   
+068   
+069   @dataclass
+070   class Settings:
+071       version: str
+072       paths: PathsConfig
+073       file_handling: FileHandlingConfig
+074       tags: TagsConfig
+075       patterns: PatternsConfig
+076       summaries: SummariesConfig
+077       indexing: IndexingConfig
+078       ui: UiConfig
+079   
+080   
+081   def _load_raw_config(path: str) -> Dict[str, Any]:
+082       if not os.path.exists(path):
+083           raise FileNotFoundError(f"Config file not found: {path}")
+084       with open(path, "r", encoding="utf-8") as f:
+085           return json.load(f)
+086   
+087   
+088   def load_settings(path: str = CONFIG_PATH) -> Settings:
+089       raw = _load_raw_config(path)
+090   
+091       paths = PathsConfig(
+092           root_locations=raw["paths"]["root_locations"],
+093           scanned_folder=raw["paths"]["scanned_folder"],
+094           index_db=os.path.join(
+095               os.path.dirname(os.path.dirname(__file__)),
+096               raw["paths"]["index_db"]
+097           ),
+098           log_folder=os.path.join(
+099               os.path.dirname(os.path.dirname(__file__)),
+100               raw["paths"]["log_folder"]
+101           ),
+102       )
+103   
+104       file_handling = FileHandlingConfig(
+105           allowed_extensions=raw["file_handling"]["allowed_extensions"],
+106           min_text_length=raw["file_handling"]["min_text_length"],
+107           detect_scanned_pdf=raw["file_handling"]["detect_scanned_pdf"],
+108       )
+109   
+110       tags = TagsConfig(
+111           vocabulary=raw["tags"]["vocabulary"],
+112           synonyms=raw["tags"]["synonyms"],
+113           max_tags_per_document=raw["tags"]["max_tags_per_document"],
+114       )
+115   
+116       patterns = PatternsConfig(
+117           project_code=raw["patterns"]["project_code"],
+118           sample_id=raw["patterns"]["sample_id"],
+119           date=raw["patterns"]["date"],
+120       )
+121   
+122       summaries = SummariesConfig(
+123           enabled=raw["summaries"]["enabled"],
+124           max_sentences=raw["summaries"]["max_sentences"],
+125           use_ai_compression=raw["summaries"]["use_ai_compression"],
+126           language_detection=raw["summaries"]["language_detection"],
+127       )
+128   
+129       indexing = IndexingConfig(
+130           batch_size=raw["indexing"]["batch_size"],
+131           fts5_enabled=raw["indexing"]["fts5_enabled"],
+132           update_existing=raw["indexing"]["update_existing"],
+133       )
+134   
+135       ui = UiConfig(
+136           type=raw["ui"]["type"],
+137           preview_enabled=raw["ui"]["preview_enabled"],
+138           filters_enabled=raw["ui"]["filters_enabled"],
+139           max_results=raw["ui"]["max_results"],
+140       )
+141   
+142       return Settings(
+143           version=raw["version"],
+144           paths=paths,
+145           file_handling=file_handling,
+146           tags=tags,
+147           patterns=patterns,
+148           summaries=summaries,
+149           indexing=indexing,
+150           ui=ui,
+151       )
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\core\docx_pdf_workflow.py
+
+001   """
+002   DOCX/PDF Workflow Module (Freeze Version)
+003   =========================================
+004   
+005   Doel
+006   ----
+007   Deze module ondersteunt een deterministische, audit-proof workflow voor
+008   manuele DOC/DOCX â†’ PDF conversie zonder afhankelijkheid van Office,
+009   LibreOffice of externe engines. De module werkt in twee fasen:
+010   
+011   1. Pass 1 â€“ Detectie van ontbrekende PDF-bestanden
+012   - Doorzoekt een rootmap naar .doc en .docx bestanden.
+013   - Controleert of een PDF met dezelfde naam bestaat.
+014   - Genereert:
+015     * missing_docs.json (machine-leesbaar voor Pass 2)
+016     * missing_docs.html (klikbare links voor manuele export)
+017   
+018   2. Pass 2 â€“ Timestamp-synchronisatie en archivering
+019   - Leest missing_docs.json.
+020   - Controleert of de verwachte PDF nu bestaat.
+021   - Kopieert mtime/atime van bronbestand naar PDF.
+022   - Verplaatst bronbestand naar een archiefmap.
+023   - Laat items waarvoor nog geen PDF bestaat staan.
+024   
+025   Eigenschappen
+026   -------------
+027   - Volledig deterministisch: Pass 2 werkt uitsluitend op de lijst van Pass 1.
+028   - Audit-proof: geen stille fouten, logging per bestand.
+029   - Geen metadata-verlies: openen van DOC(X) wijzigt ctime niet.
+030   - Move binnen dezelfde schijf behoudt ctime.
+031   - Geen afhankelijkheden buiten standaard Python.
+032   
+033   Configuratie
+034   ------------
+035   Pas ROOT_FOLDER en ARCHIVE_FOLDER aan volgens jouw omgeving.
+036   
+037   Gebruik
+038   -------
+039   Pass 1:
+040   python docx_pdf_workflow.py pass1
+041   
+042   Pass 2:
+043   python docx_pdf_workflow.py pass2
+044   
+045   Outputbestanden:
+046   missing_docs.json
+047   missing_docs.html
+048   """
+049   
+050   import os
+051   import json
+052   import shutil
+053   from pathlib import Path
+054   from datetime import datetime
+055   import sys
+056   
+057   
+058   # === CONFIGUREERBARE PADEN ====================================================
+059   
+060   ROOT_FOLDER = r"K:\KWLAB\analyseverslagen"
+061   ARCHIVE_FOLDER = r"K:\KWLAB\analyseverslagen\_converted"
+062   JSON_LIST = "missing_docs.json"
+063   HTML_LIST = "missing_docs.html"
+064   
+065   
+066   # === HULPFUNCTIES =============================================================
+067   
+068   def find_missing_pdfs(root: str):
+069       """Doorzoekt rootmap en retourneert lijst dicts met bronbestand en verwacht PDF-pad."""
+070       root = Path(root)
+071       results = []
+072   
+073       # for path in root.rglob("*"):
+074       for path in root.glob("*"):
+075           # sla Office tijdelijke bestanden over
+076           if path.name.startswith("~$"):
+077               continue
+078   
+079           if path.suffix.lower() in [".doc", ".docx"]:
+080               expected_pdf = path.with_suffix(".pdf")
+081               if not expected_pdf.exists():
+082                   results.append({
+083                       "source": str(path),
+084                       "expected_pdf": str(expected_pdf),
+085                   })
+086   
+087       return results
+088   
+089   
+090   def write_json(data, filename):
+091       """Schrijft JSON-lijst naar bestand."""
+092       with open(filename, "w", encoding="utf-8") as f:
+093           json.dump(data, f, indent=2, ensure_ascii=False)
+094           f.write("\n")
+095   
+096   
+097   def write_html(data, filename):
+098       """Genereert HTML-lijst met klikbare links naar bronbestanden."""
+099       lines = [
+100           "<html><body>",
+101           "<h2>DOC/DOCX zonder PDF</h2>",
+102           "<ul>",
+103       ]
+104   
+105       for item in data:
+106           src = item["source"].replace("\\", "/")
+107           pdf = item["expected_pdf"].replace("\\", "/")
+108           link = f'<a href="file:///{src}">{Path(src).name}</a>'
+109           lines.append(f"<li>{link} â†’ verwacht: {pdf}</li>")
+110   
+111       lines += ["</ul>", "</body></html>"]
+112   
+113       with open(filename, "w", encoding="utf-8") as f:
+114           f.write("\n".join(lines))
+115   
+116   
+117   def copy_timestamps(src: str, dst: str):
+118       """Kopieert atime/mtime van bronbestand naar PDF."""
+119       stat = os.stat(src)
+120       os.utime(dst, (stat.st_atime, stat.st_mtime))
+121   
+122   
+123   def ensure_folder(path: str):
+124       """Maakt map aan indien nodig."""
+125       Path(path).mkdir(parents=True, exist_ok=True)
+126   
+127   
+128   def log(msg: str):
+129       """Eenvoudige console-logging met timestamp."""
+130       print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {msg}")
+131   
+132   
+133   # === PASS 1 ===================================================================
+134   
+135   def run_pass1():
+136       """Genereert JSON + HTML lijst van DOC(X) zonder PDF."""
+137       log("Pass 1 gestart: detectie van ontbrekende PDF's...")
+138   
+139       log(f"ROOT_FOLDER exists = {Path(ROOT_FOLDER).exists()}")
+140   
+141       missing = find_missing_pdfs(ROOT_FOLDER)
+142   
+143       write_json(missing, JSON_LIST)
+144       write_html(missing, HTML_LIST)
+145   
+146       log(f"Gevonden items: {len(missing)}")
+147       log(f"JSON geschreven naar: {JSON_LIST}")
+148       log(f"HTML geschreven naar: {HTML_LIST}")
+149       log("Pass 1 voltooid.")
+150   
+151   
+152   # === PASS 2 ===================================================================
+153   
+154   def run_pass2():
+155       """Synchroniseert timestamps en archiveert bronbestanden."""
+156       log("Pass 2 gestart: timestamp-sync en archivering...")
+157   
+158       if not Path(JSON_LIST).exists():
+159           log("FOUT: JSON-lijst ontbreekt. Draai eerst Pass 1.")
+160           return
+161   
+162       with open(JSON_LIST, "r", encoding="utf-8") as f:
+163           items = json.load(f)
+164   
+165       ensure_folder(ARCHIVE_FOLDER)
+166   
+167       remaining = []
+168   
+169       for item in items:
+170           src = item.get("source")
+171           pdf = item.get("expected_pdf")
+172   
+173           src_path = Path(src) if src else None
+174           pdf_path = Path(pdf) if pdf else None
+175   
+176           try:
+177               # 1) sanity checks op JSON
+178               if not src_path or not pdf_path:
+179                   log(f"FOUT: onvolledig item in JSON: {item}")
+180                   remaining.append(item)
+181                   continue
+182   
+183               # 2) als bronbestand weg is: niet crashen, maar markeren/skippen
+184               if not src_path.exists():
+185                   log(f"SKIP: bronbestand niet gevonden (mogelijk reeds verplaatst): {src}")
+186                   # Je kan kiezen: ofwel verwijderen uit lijst (afgehandeld), ofwel laten staan.
+187                   # Ik kies 'laten staan' = audit-streng, zodat je dit kan inspecteren.
+188                   remaining.append(item)
+189                   continue
+190   
+191               # 3) PDF check
+192               if pdf_path.exists():
+193                   copy_timestamps(str(src_path), str(pdf_path))
+194                   target = Path(ARCHIVE_FOLDER) / src_path.name
+195                   shutil.move(str(src_path), str(target))
+196                   log(f"OK: {src} â†’ PDF gevonden, timestamps gesynchroniseerd, bron verplaatst.")
+197               else:
+198                   # PDF nog niet gemaakt â†’ blijft op lijst
+199                   remaining.append(item)
+200   
+201           except KeyboardInterrupt:
+202               log("AFGEBROKEN door gebruiker (Ctrl+C).")
+203               raise
+204           except Exception as e:
+205               log(f"FOUT bij verwerken van {src}: {e}")
+206               remaining.append(item)
+207   
+208   
+209       # for item in items:
+210       #     src = item.get("source")
+211       #     pdf = item.get("expected_pdf")
+212   
+213       #     src_path = Path(src)
+214       #     pdf_path = Path(pdf)
+215   
+216       #     if not src_path.exists():
+217       #         log(f"SKIP: bronbestand bestaat niet meer (waarschijnlijk reeds gearchiveerd): {src}")
+218       #         continue
+219   
+220       #     if pdf_path.exists():
+221       #         try:
+222       #             copy_timestamps(src, pdf)
+223       #             target = Path(ARCHIVE_FOLDER) / src_path.name
+224       #             shutil.move(src, target)
+225       #             log(f"OK: {src} â†’ PDF gevonden, timestamps gesynchroniseerd, bron verplaatst.")
+226       #         except Exception as e:
+227       #             log(f"FOUT bij verwerken van {src}: {e}")
+228       #             remaining.append(item)
+229       #     else:
+230       #         remaining.append(item)
+231               
+232       write_json(remaining, JSON_LIST)
+233   
+234       log(f"Resterende items (nog geen PDF): {len(remaining)}")
+235       log("Pass 2 voltooid.")
+236   
+237   
+238   # === ENTRYPOINT ===============================================================
+239   
+240   if __name__ == "__main__":
+241       if len(sys.argv) != 2:
+242           print("Gebruik: python docx_pdf_workflow.py pass1|pass2")
+243           sys.exit(1)
+244   
+245       mode = sys.argv[1].lower()
+246   
+247       if mode == "pass1":
+248           run_pass1()
+249       elif mode == "pass2":
+250           run_pass2()
+251       else:
+252           print("Onbekende modus. Gebruik: pass1 of pass2.")
+253           sys.exit(1)
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\core\extractor.py
+
+001   # =====================================================================
+002   # BEGIN file: core/extractor.py
+003   # =====================================================================
+004   from typing import Optional
+005   import re
+006   
+007   import pypdf
+008   
+009   
+010   def extract_text_basic(path: str, max_chars: Optional[int] = None) -> str:
+011       """
+012       Eenvoudige tekstextractie uit PDF.
+013       Audit-proof: geen stille fouten, altijd string terug.
+014       """
+015       try:
+016           reader = pypdf.PdfReader(path)
+017           texts = []
+018           for page in reader.pages:
+019               t = page.extract_text() or ""
+020               texts.append(t)
+021               if max_chars is not None and sum(len(x) for x in texts) >= max_chars:
+022                   break
+023           result = "\n".join(texts)
+024           if max_chars is not None:
+025               return result[:max_chars]
+026           return result
+027       except Exception as e:
+028           print(f"[EXTRACT][ERROR] {path}: {e}")
+029           return ""
+030   
+031   
+032   def has_text_objects(path: str) -> bool:
+033       """
+034       Heuristiek: controleer of er tekstobjecten/fonts aanwezig zijn.
+035       Voor eenvoud: als extract_text_basic > 0, beschouwen we als tekst-PDF.
+036       Voor meer diepgang kan PyMuPDF gebruikt worden, maar hier houden we het compact.
+037       """
+038       text = extract_text_basic(path, max_chars=500)
+039       return len(text.strip()) > 0
+040   
+041   
+042   def detect_language(text: str) -> str:
+043       """
+044       Zeer eenvoudige taalheuristiek NL/EN.
+045       Voor echte detectie kan langdetect gebruikt worden, maar we houden het licht.
+046       """
+047       nl_markers = ["de ", "het ", "een ", "rapport", "kalibratie", "kalibreren", "monster"]
+048       en_markers = ["the ", "report", "calibration", "sample", "quality"]
+049   
+050       nl_score = sum(text.lower().count(m) for m in nl_markers)
+051       en_score = sum(text.lower().count(m) for m in en_markers)
+052   
+053       if nl_score >= en_score:
+054           return "nl"
+055       return "en"
+056   
+057   
+058   def extract_title(text: str) -> str:
+059       """
+060       Neem de eerste niet-lege regel als titel.
+061       """
+062       for line in text.splitlines():
+063           line = line.strip()
+064           if line:
+065               return line[:200]
+066       return ""
+067   
+068   
+069   
+070   def extract_search_text(text: str, max_words: int = 400) -> str:
+071       """
+072       Genereer zoekbare contexttekst:
+073       - geen cijfers
+074       - voldoende letters
+075       - beperkt aantal woorden
+076       """
+077       words = []
+078       for token in re.findall(r"[A-Za-zÀ-ÿ]{3,}", text):
+079           words.append(token.lower())
+080           if len(words) >= max_words:
+081               break
+082       return " ".join(words)
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\core\indexer.py
+
+001   # =====================================================================
+002   # BEGIN file: core/indexer.py
+003   # =====================================================================
+004   
+005   # =====================================================================
+006   # FILE: core/indexer.py
+007   # =====================================================================
+008   
+009   import os
+010   import re
+011   import sqlite3
+012   from typing import Dict, Any, List
+013   
+014   from .config import load_settings
+015   from .scanner import scan_and_classify
+016   from .extractor import extract_text_basic, extract_title
+017   from .tagger import extract_tags, extract_patterns
+018   from .summarizer import summarize_with_language
+019   
+020   
+021   # ---------------------------------------------------------------------
+022   # Schema
+023   # ---------------------------------------------------------------------
+024   SCHEMA_METADATA = """
+025   CREATE TABLE IF NOT EXISTS files (
+026       id INTEGER PRIMARY KEY,
+027       path TEXT UNIQUE NOT NULL,
+028       size INTEGER,
+029       mtime REAL,
+030       ctime REAL,
+031       title TEXT,
+032       tags TEXT,
+033       project_codes TEXT,
+034       sample_ids TEXT,
+035       dates TEXT,
+036       summary TEXT,
+037       search_text TEXT
+038   );
+039   """
+040   
+041   SCHEMA_FTS = """
+042   CREATE VIRTUAL TABLE IF NOT EXISTS files_fts
+043   USING fts5(
+044       content,
+045       tags,
+046       summary,
+047       path,
+048       tokenize = "porter"
+049   );
+050   """
+051   
+052   
+053   # ---------------------------------------------------------------------
+054   # Helpers
+055   # ---------------------------------------------------------------------
+056   def _connect_db(db_path: str) -> sqlite3.Connection:
+057       os.makedirs(os.path.dirname(db_path), exist_ok=True)
+058       conn = sqlite3.connect(db_path)
+059       conn.execute("PRAGMA journal_mode=WAL;")
+060       conn.execute("PRAGMA synchronous=NORMAL;")
+061       return conn
+062   
+063   
+064   def _ensure_column(conn: sqlite3.Connection, table: str, column: str, ddl: str) -> None:
+065       """
+066       Zorgt dat een kolom bestaat (migratie-proof).
+067       - We checken PRAGMA table_info.
+068       - Als de kolom ontbreekt, voeren we 1x ALTER TABLE uit.
+069       """
+070       cols = [r[1] for r in conn.execute(f"PRAGMA table_info({table})").fetchall()]
+071       if column not in cols:
+072           conn.execute(ddl)
+073           conn.commit()
+074   
+075   
+076   def _make_search_text(raw_text: str, max_words: int = 400) -> str:
+077       """
+078       Maak een zoek-anker tekst (deterministisch):
+079       - enkel woorden met letters (geen cijfers)
+080       - minimum 3 letters
+081       - lowercased
+082       - capped op max_words
+083       Waarom: betere recall/precision dan 'summary' voor FTS.
+084       """
+085       tokens = re.findall(r"[A-Za-zÀ-ÿ]{3,}", raw_text)
+086       tokens = [t.lower() for t in tokens][:max_words]
+087       return " ".join(tokens)
+088   
+089   
+090   # ---------------------------------------------------------------------
+091   # Init DB
+092   # ---------------------------------------------------------------------
+093   def init_db() -> None:
+094       settings = load_settings()
+095       conn = _connect_db(settings.paths.index_db)
+096       with conn:
+097           conn.execute(SCHEMA_METADATA)
+098           if settings.indexing.fts5_enabled:
+099               conn.execute(SCHEMA_FTS)
+100   
+101           # Migratie voor bestaande DB's (als search_text kolom nog ontbreekt)
+102           _ensure_column(
+103               conn,
+104               table="files",
+105               column="search_text",
+106               ddl="ALTER TABLE files ADD COLUMN search_text TEXT",
+107           )
+108   
+109       conn.close()
+110       print("[INDEX] Database initialized")
+111   
+112   
+113   # ---------------------------------------------------------------------
+114   # Upsert metadata
+115   # ---------------------------------------------------------------------
+116   def _upsert_file(conn: sqlite3.Connection, record: Dict[str, Any]) -> int:
+117       """
+118       Upsert in metadata-tabel, retourneer id.
+119       Belangrijk: search_text wordt ook bewaard (handig voor inspectie/debug).
+120       """
+121       cur = conn.cursor()
+122       cur.execute(
+123           """
+124           INSERT INTO files (
+125               path, size, mtime, ctime, title, tags,
+126               project_codes, sample_ids, dates, summary, search_text
+127           )
+128           VALUES (
+129               :path, :size, :mtime, :ctime, :title, :tags,
+130               :project_codes, :sample_ids, :dates, :summary, :search_text
+131           )
+132           ON CONFLICT(path) DO UPDATE SET
+133               size=excluded.size,
+134               mtime=excluded.mtime,
+135               ctime=excluded.ctime,
+136               title=excluded.title,
+137               tags=excluded.tags,
+138               project_codes=excluded.project_codes,
+139               sample_ids=excluded.sample_ids,
+140               dates=excluded.dates,
+141               summary=excluded.summary,
+142               search_text=excluded.search_text
+143           """,
+144           record,
+145       )
+146       conn.commit()
+147   
+148       row = conn.execute("SELECT id FROM files WHERE path = ?", (record["path"],)).fetchone()
+149       return row[0] if row else 0
+150   
+151   
+152   # ---------------------------------------------------------------------
+153   # Update FTS (portable)
+154   # ---------------------------------------------------------------------
+155   def _update_fts(conn: sqlite3.Connection, record: Dict[str, Any]) -> None:
+156       """
+157       Update FTS5 row voor dit document.
+158       We gebruiken hier bewust:
+159       - DELETE FROM files_fts WHERE rowid=?
+160       - INSERT INTO files_fts(...)
+161       Dit is het meest portable en voorkomt "SQL logic error" varianten.
+162       """
+163       row = conn.execute("SELECT id FROM files WHERE path = ?", (record["path"],)).fetchone()
+164       if not row:
+165           return
+166       doc_id = row[0]
+167   
+168       conn.execute("DELETE FROM files_fts WHERE rowid = ?", (doc_id,))
+169       conn.execute(
+170           """
+171           INSERT INTO files_fts(rowid, content, tags, summary, path)
+172           VALUES (?, ?, ?, ?, ?)
+173           """,
+174           (
+175               doc_id,
+176               record["search_text"],  # <-- hier zit de 'paar honderd woorden zonder cijfers'
+177               record["tags"],
+178               record["summary"],
+179               record["path"],
+180           ),
+181       )
+182       conn.commit()
+183   
+184   
+185   # ---------------------------------------------------------------------
+186   # Indexing
+187   # ---------------------------------------------------------------------
+188   def index_all() -> None:
+189       settings = load_settings()
+190       init_db()
+191       conn = _connect_db(settings.paths.index_db)
+192   
+193       batch: List[Dict[str, Any]] = []
+194       batch_size = settings.indexing.batch_size
+195   
+196       for meta in scan_and_classify():
+197           path = meta["path"]
+198           print(f"[INDEX] Processing {path}")
+199   
+200           text = extract_text_basic(path)
+201           if len(text.strip()) < settings.file_handling.min_text_length:
+202               print(f"[INDEX][SKIP] Too little text in {path}")
+203               continue
+204   
+205           title = extract_title(text)
+206           tags = extract_tags(text)
+207           patterns = extract_patterns(text)
+208           summary = summarize_with_language(text, max_sentences=settings.summaries.max_sentences)
+209   
+210           search_text = _make_search_text(text, max_words=400)
+211   
+212           record = {
+213               "path": path,
+214               "size": meta["size"],
+215               "mtime": meta["mtime"],
+216               "ctime": meta["ctime"],
+217               "title": title,
+218               "tags": ",".join(tags),
+219               "project_codes": ",".join(patterns.get("project_code", [])),
+220               "sample_ids": ",".join(patterns.get("sample_id", [])),
+221               "dates": ",".join(patterns.get("date", [])),
+222               "summary": summary,
+223               "search_text": search_text,
+224           }
+225   
+226           batch.append(record)
+227   
+228           if len(batch) >= batch_size:
+229               _flush_batch(conn, batch, settings)
+230               batch.clear()
+231   
+232       if batch:
+233           _flush_batch(conn, batch, settings)
+234   
+235       conn.close()
+236       print("[INDEX] Completed indexing")
+237   
+238   
+239   def _flush_batch(conn: sqlite3.Connection, batch: List[Dict[str, Any]], settings) -> None:
+240       for rec in batch:
+241           try:
+242               _upsert_file(conn, rec)
+243               if settings.indexing.fts5_enabled:
+244                   _update_fts(conn, rec)
+245           except Exception as e:
+246               print(f"[INDEX][ERROR] {rec['path']}: {e}")
+247   
+248   
+249   # ---------------------------------------------------------------------
+250   # Entry point
+251   # ---------------------------------------------------------------------
+252   if __name__ == "__main__":
+253       index_all()
+254   
+255   
+256   
+257   # import os
+258   # import sqlite3
+259   # from typing import Dict, Any, List
+260   
+261   # from .config import load_settings
+262   # from .scanner import scan_and_classify
+263   # from .extractor import extract_text_basic, extract_title
+264   # from .tagger import extract_tags, extract_patterns
+265   # from .summarizer import summarize_with_language
+266   
+267   
+268   # SCHEMA_METADATA = """
+269   # CREATE TABLE IF NOT EXISTS files (
+270   #     id INTEGER PRIMARY KEY,
+271   #     path TEXT UNIQUE NOT NULL,
+272   #     size INTEGER,
+273   #     mtime REAL,
+274   #     ctime REAL,
+275   #     title TEXT,
+276   #     tags TEXT,
+277   #     project_codes TEXT,
+278   #     sample_ids TEXT,
+279   #     dates TEXT,
+280   #     summary TEXT
+281   # );
+282   # """
+283   
+284   # SCHEMA_FTS = """
+285   # CREATE VIRTUAL TABLE IF NOT EXISTS files_fts
+286   # USING fts5(
+287   #     content,
+288   #     tags,
+289   #     summary,
+290   #     path,
+291   #     tokenize = "porter"
+292   # );
+293   # """
+294   
+295   
+296   # def _connect_db(db_path: str) -> sqlite3.Connection:
+297   #     os.makedirs(os.path.dirname(db_path), exist_ok=True)
+298   #     conn = sqlite3.connect(db_path)
+299   #     conn.execute("PRAGMA journal_mode=WAL;")
+300   #     conn.execute("PRAGMA synchronous=NORMAL;")
+301   #     return conn
+302   
+303   
+304   # def init_db() -> None:
+305   #     settings = load_settings()
+306   #     conn = _connect_db(settings.paths.index_db)
+307   #     with conn:
+308   #         conn.execute(SCHEMA_METADATA)
+309   #         if settings.indexing.fts5_enabled:
+310   #             conn.execute(SCHEMA_FTS)
+311   #     conn.close()
+312   #     print("[INDEX] Database initialized")
+313   
+314   
+315   # def _upsert_file(conn: sqlite3.Connection, record: Dict[str, Any]) -> int:
+316   #     """
+317   #     Upsert in metadata-tabel, retourneer id.
+318   #     """
+319   #     cur = conn.cursor()
+320   #     cur.execute(
+321   #         """
+322   #         INSERT INTO files (path, size, mtime, ctime, title, tags,
+323   #                            project_codes, sample_ids, dates, summary)
+324   #         VALUES (:path, :size, :mtime, :ctime, :title, :tags,
+325   #                 :project_codes, :sample_ids, :dates, :summary)
+326   #         ON CONFLICT(path) DO UPDATE SET
+327   #             size=excluded.size,
+328   #             mtime=excluded.mtime,
+329   #             ctime=excluded.ctime,
+330   #             title=excluded.title,
+331   #             tags=excluded.tags,
+332   #             project_codes=excluded.project_codes,
+333   #             sample_ids=excluded.sample_ids,
+334   #             dates=excluded.dates,
+335   #             summary=excluded.summary
+336   #         """,
+337   #         record,
+338   #     )
+339   #     conn.commit()
+340   #     return cur.lastrowid or cur.execute(
+341   #         "SELECT id FROM files WHERE path = ?", (record["path"],)
+342   #     ).fetchone()[0]
+343   
+344   
+345   # # core/indexer.py  (PATCH: vervang _update_fts)
+346   # def _update_fts(conn: sqlite3.Connection, record: Dict[str, Any]) -> None:
+347   #     # haal id uit metadata-table
+348   #     row = conn.execute("SELECT id FROM files WHERE path = ?", (record["path"],)).fetchone()
+349   #     if not row:
+350   #         return
+351   #     doc_id = row[0]
+352   
+353   #     # 1) verwijder bestaande entry (portable)
+354   #     conn.execute("DELETE FROM files_fts WHERE rowid = ?", (doc_id,))
+355   
+356   #     # 2) insert nieuwe content
+357   #     conn.execute(
+358   #         """
+359   #         INSERT INTO files_fts(rowid, content, tags, summary, path)
+360   #         VALUES (?, ?, ?, ?, ?)
+361   #         """,
+362   #         (doc_id, record["content"], record["tags"], record["summary"], record["path"]),
+363   #     )
+364   #     conn.commit()
+365   
+366   
+367   # def index_all() -> None:
+368   #     settings = load_settings()
+369   #     init_db()
+370   #     conn = _connect_db(settings.paths.index_db)
+371   
+372   #     batch: List[Dict[str, Any]] = []
+373   #     batch_size = settings.indexing.batch_size
+374   
+375   #     for meta in scan_and_classify():
+376   #         path = meta["path"]
+377   #         print(f"[INDEX] Processing {path}")
+378   #         text = extract_text_basic(path)
+379   #         if len(text.strip()) < settings.file_handling.min_text_length:
+380   #             print(f"[INDEX][SKIP] Too little text in {path}")
+381   #             continue
+382   
+383   #         title = extract_title(text)
+384   #         tags = extract_tags(text)
+385   #         patterns = extract_patterns(text)
+386   #         summary = summarize_with_language(text, max_sentences=settings.summaries.max_sentences)
+387   
+388   #         record = {
+389   #             "path": path,
+390   #             "size": meta["size"],
+391   #             "mtime": meta["mtime"],
+392   #             "ctime": meta["ctime"],
+393   #             "title": title,
+394   #             "tags": ",".join(tags),
+395   #             "project_codes": ",".join(patterns.get("project_code", [])),
+396   #             "sample_ids": ",".join(patterns.get("sample_id", [])),
+397   #             "dates": ",".join(patterns.get("date", [])),
+398   #             "summary": summary,
+399   #             "content": text,
+400   #         }
+401   
+402   #         batch.append(record)
+403   
+404   #         if len(batch) >= batch_size:
+405   #             _flush_batch(conn, batch, settings)
+406   #             batch.clear()
+407   
+408   #     if batch:
+409   #         _flush_batch(conn, batch, settings)
+410   
+411   #     conn.close()
+412   #     print("[INDEX] Completed indexing")
+413   
+414   
+415   # def _flush_batch(conn: sqlite3.Connection, batch: List[Dict[str, Any]], settings) -> None:
+416   #     for rec in batch:
+417   #         try:
+418   #             _upsert_file(conn, rec)
+419   #             if settings.indexing.fts5_enabled:
+420   #                 _update_fts(conn, rec)
+421   #         except Exception as e:
+422   #             print(f"[INDEX][ERROR] {rec['path']}: {e}")
+423   
+424   
+425   
+426   
+427   # if __name__ == "__main__":
+428   #     index_all()
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\core\scanner.py
+
+001   # =====================================================================
+002   # BEGIN file: core/scanner.py
+003   # =====================================================================
+004   import os
+005   import shutil
+006   from typing import Iterator, Dict, Any, List
+007   
+008   from .config import load_settings
+009   from .extractor import extract_text_basic, has_text_objects
+010   
+011   EXCLUDE_PREFIXES = ("~$", "old_")
+012   EXCLUDE_SUFFIXES = ("_draft.pdf",)
+013   
+014   def _is_excluded(filename: str) -> bool:
+015       name = filename.lower()
+016       if name.startswith(EXCLUDE_PREFIXES):
+017           return True
+018       if name.endswith(EXCLUDE_SUFFIXES):
+019           return True
+020       return False
+021   
+022   
+023   def iter_files(root_locations: List[str], allowed_extensions: List[str]) -> Iterator[str]:
+024       for root in root_locations:
+025           if not os.path.exists(root):
+026               continue
+027           # for dirpath, _, filenames in os.walk(root):
+028               # for name in filenames:
+029               #     ext = os.path.splitext(name)[1].lower().lstrip(".")
+030               #     if ext in allowed_extensions:
+031               #         yield os.path.join(dirpath, name)
+032               
+033           for dirpath, _, filenames in os.walk(root):
+034               if os.path.abspath(dirpath) != os.path.abspath(root):
+035                   continue
+036   
+037               for name in filenames:
+038                   if _is_excluded(name):
+039                       continue
+040                   ext = os.path.splitext(name)[1].lower().lstrip(".")
+041                   if ext in allowed_extensions:
+042                       yield os.path.join(dirpath, name)
+043   
+044   
+045   def is_scanned_pdf(path: str, settings) -> bool:
+046       """
+047       Detecteer gescande PDF's op basis van:
+048       - tekstlengte
+049       - aanwezigheid van tekstobjecten/fonts
+050       """
+051       text = extract_text_basic(path, max_chars=2000)
+052       if settings.file_handling.detect_scanned_pdf.get("check_text_length", True):
+053           if len(text.strip()) < settings.file_handling.min_text_length:
+054               # Verdacht weinig tekst
+055               # Extra check op objectstructuur
+056               if settings.file_handling.detect_scanned_pdf.get("check_fonts", True) or \
+057                  settings.file_handling.detect_scanned_pdf.get("check_xobjects", True):
+058                   if not has_text_objects(path):
+059                       return True
+060       return False
+061   
+062   
+063   def scan_and_classify() -> Iterator[Dict[str, Any]]:
+064       """
+065       Generator die alle PDF's doorloopt, gescande PDF's verplaatst,
+066       en digitale PDF's teruggeeft met basismetadata.
+067       """
+068       settings = load_settings()
+069       os.makedirs(settings.paths.scanned_folder, exist_ok=True)
+070   
+071       for path in iter_files(settings.paths.root_locations,
+072                              settings.file_handling.allowed_extensions):
+073           try:
+074               if is_scanned_pdf(path, settings):
+075                   # Verplaats naar gescand-folder
+076                   rel = os.path.relpath(path, start=settings.paths.root_locations[0])
+077                   target = os.path.join(settings.paths.scanned_folder, rel)
+078                   os.makedirs(os.path.dirname(target), exist_ok=True)
+079                   shutil.move(path, target)
+080                   print(f"[SCAN] Moved scanned PDF to {target}")
+081                   continue
+082   
+083               stat = os.stat(path)
+084               yield {
+085                   "path": path,
+086                   "size": stat.st_size,
+087                   "mtime": stat.st_mtime,
+088                   "ctime": stat.st_ctime,
+089               }
+090           except Exception as e:
+091               print(f"[SCAN][ERROR] {path}: {e}")
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\core\search_api.py
+
+001   # =====================================================================
+002   # BEGIN file: core/search_api.py
+003   # =====================================================================
+004   # from typing import List, Dict, Any
+005   
+006   # import sqlite3
+007   
+008   # from .config import load_settings
+009   
+010   
+011   # def _connect() -> sqlite3.Connection:
+012   #     settings = load_settings()
+013   #     conn = sqlite3.connect(settings.paths.index_db)
+014   #     conn.row_factory = sqlite3.Row
+015   #     return conn
+016   
+017   
+018   # def search(query: str, limit: int = 50) -> List[Dict[str, Any]]:
+019   #     """
+020   #     Full-text search via FTS5 + ophalen metadata.
+021   #     """
+022   #     settings = load_settings()
+023   #     limit = min(limit, settings.ui.max_results)
+024   
+025   #     conn = _connect()
+026   #     try:
+027   #         cur = conn.cursor()
+028   #         cur.execute(
+029   #             """
+030   #             SELECT f.id, f.path, f.title, f.tags, f.summary, f.dates,
+031   #                    f.project_codes, f.sample_ids
+032   #             FROM files f
+033   #             JOIN files_fts ft ON f.id = ft.rowid
+034   #             WHERE files_fts MATCH ?
+035   #             ORDER BY rank
+036   #             LIMIT ?
+037   #             """,
+038   #             (query, limit),
+039   #         )
+040   #         rows = cur.fetchall()
+041   #         return [dict(r) for r in rows]
+042   #     finally:
+043   #         conn.close()
+044   
+045   # core/search_api.py  (PATCH)
+046   from typing import List, Dict, Any
+047   import sqlite3
+048   from .config import load_settings
+049   
+050   def _connect() -> sqlite3.Connection:
+051       settings = load_settings()
+052       conn = sqlite3.connect(settings.paths.index_db)
+053       conn.row_factory = sqlite3.Row
+054       return conn
+055   
+056   def search(query: str, limit: int = 50) -> List[Dict[str, Any]]:
+057       settings = load_settings()
+058       limit = min(limit, settings.ui.max_results)
+059       conn = _connect()
+060       try:
+061           cur = conn.cursor()
+062           cur.execute(
+063               """
+064               SELECT f.id, f.path, f.title, f.tags, f.summary, f.dates,
+065                   f.project_codes, f.sample_ids,
+066                   bm25(files_fts) AS score
+067               FROM files AS f
+068               JOIN files_fts AS ft ON f.id = ft.rowid
+069               WHERE files_fts MATCH ?
+070               ORDER BY score
+071               LIMIT ?
+072               """,
+073               (query, limit),
+074       )
+075           # cur.execute(
+076           #     """
+077           #     SELECT f.id, f.path, f.title, f.tags, f.summary, f.dates,
+078           #            f.project_codes, f.sample_ids,
+079           #            bm25(ft) AS score
+080           #     FROM files f
+081           #     JOIN files_fts ft ON f.id = ft.rowid
+082           #     WHERE ft MATCH ?
+083           #     ORDER BY score
+084           #     LIMIT ?
+085           #     """,
+086           #     (query, limit),
+087           # )
+088           return [dict(r) for r in cur.fetchall()]
+089       finally:
+090           conn.close()
+091   
+092   
+093   def get_document(doc_id: int) -> Dict[str, Any]:
+094       conn = _connect()
+095       try:
+096           cur = conn.cursor()
+097           cur.execute(
+098               """
+099               SELECT id, path, title, tags, summary, dates,
+100                      project_codes, sample_ids
+101               FROM files
+102               WHERE id = ?
+103               """,
+104               (doc_id,),
+105           )
+106           row = cur.fetchone()
+107           return dict(row) if row else {}
+108       finally:
+109           conn.close()
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\core\summarizer.py
+
+001   # =====================================================================
+002   # BEGIN file: core/summarizer.py
+003   # =====================================================================
+004   from typing import List
+005   
+006   from .extractor import detect_language
+007   
+008   
+009   def _split_sentences(text: str) -> List[str]:
+010       """
+011       Zeer eenvoudige zinssegmentatie.
+012       Genoeg voor technische rapporten.
+013       """
+014       raw = text.replace("\n", " ")
+015       parts = [p.strip() for p in raw.split(".") if p.strip()]
+016       return [p + "." for p in parts]
+017   
+018   
+019   def summarize_text(text: str, max_sentences: int = 3) -> str:
+020       """
+021       Extractieve samenvatting: neem de eerste zinnen die inhoudelijk lijken.
+022       Geen AI, volledig deterministisch.
+023       """
+024       if not text.strip():
+025           return ""
+026   
+027       sentences = _split_sentences(text)
+028       if not sentences:
+029           return ""
+030   
+031       # Eenvoudige heuristiek: neem de eerste zinnen die langer zijn dan X
+032       filtered = [s for s in sentences if len(s) > 40]
+033       if not filtered:
+034           filtered = sentences
+035   
+036       summary = " ".join(filtered[:max_sentences])
+037       return summary
+038   
+039   
+040   def summarize_with_language(text: str, max_sentences: int = 3) -> str:
+041       """
+042       Voor nu: zelfde samenvatting, taal alleen relevant voor eventuele toekomstige AI.
+043       """
+044       _ = detect_language(text)
+045       return summarize_text(text, max_sentences=max_sentences)
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\core\tagger.py
+
+001   # =====================================================================
+002   # BEGIN file: core/tagger.py
+003   # =====================================================================
+004   import re
+005   from typing import Dict, Any, List
+006   
+007   from .config import load_settings
+008   
+009   
+010   def normalize_text(text: str) -> str:
+011       return text.lower()
+012   
+013   
+014   def extract_tags(text: str) -> List[str]:
+015       """
+016       Regelgebaseerde tag-extractie op basis van vocabularium en synoniemen.
+017       """
+018       settings = load_settings()
+019       vocab = [v.lower() for v in settings.tags.vocabulary]
+020       synonyms = {k.lower(): v for k, v in settings.tags.synonyms.items()}
+021   
+022       norm = normalize_text(text)
+023       found = set()
+024   
+025       # Synoniemen eerst
+026       for syn, canonical in synonyms.items():
+027           if syn in norm:
+028               found.add(canonical)
+029   
+030       # Vocabulaire
+031       for term in vocab:
+032           if term in norm:
+033               # Gebruik originele vorm uit vocabularium
+034               for original in settings.tags.vocabulary:
+035                   if original.lower() == term:
+036                       found.add(original)
+037                       break
+038   
+039       # Beperk aantal tags
+040       tags = sorted(found)
+041       return tags[: settings.tags.max_tags_per_document]
+042   
+043   
+044   # def extract_patterns(text: str) -> Dict[str, Any]:
+045   #     """
+046   #     Regex-gebaseerde extractie van projectcodes, sample-ID's, datums.
+047   #     """
+048   #     settings = load_settings()
+049   #     patterns = {
+050   #         "project_code": settings.patterns.project_code,
+051   #         "sample_id": settings.patterns.sample_id,
+052   #         "date": settings.patterns.date,
+053   #     }
+054   
+055   #     result: Dict[str, Any] = {}
+056   #     for key, pattern in patterns.items():
+057   #         matches = re.findall(pattern, text)
+058   #         if matches:
+059   #             # Uniek maken, maar volgorde behouden
+060   #             seen = set()
+061   #             unique = []
+062   #             for m in matches:
+063   #                 val = m if isinstance(m, str) else m[0]
+064   #                 if val not in seen:
+065   #                     seen.add(val)
+066   #                     unique.append(val)
+067   #             result[key] = unique
+068   #     return result
+069   
+070   
+071   
+072   # core/tagger.py (PATCH: fix vroegtijdige return)
+073   def extract_patterns(text: str) -> Dict[str, Any]:
+074       settings = load_settings()
+075       patterns = {
+076           "project_code": settings.patterns.project_code,
+077           "sample_id": settings.patterns.sample_id,
+078           "date": settings.patterns.date,
+079       }
+080   
+081       result: Dict[str, Any] = {}
+082       for key, pattern in patterns.items():
+083           matches = re.findall(pattern, text)
+084           if matches:
+085               seen = set()
+086               unique = []
+087               for m in matches:
+088                   val = m if isinstance(m, str) else m[0]
+089                   if val not in seen:
+090                       seen.add(val)
+091                       unique.append(val)
+092               result[key] = unique
+093   
+094       return result
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\missing_docs.html
+
+001   <html><body>
+002   <h2>DOC/DOCX zonder PDF</h2>
+003   <ul>
+004   <li><a href="file:///K:/KWLAB/analyseverslagen/20140811_Agilent GC - analyse van KTD olies.docx">20140811_Agilent GC - analyse van KTD olies.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20140811_Agilent GC - analyse van KTD olies.pdf</li>
+005   <li><a href="file:///K:/KWLAB/analyseverslagen/20150811_SoftPitch_Cherepovets.docx">20150811_SoftPitch_Cherepovets.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20150811_SoftPitch_Cherepovets.pdf</li>
+006   <li><a href="file:///K:/KWLAB/analyseverslagen/20150818_capaciteit BA  harsen.docx">20150818_capaciteit BA  harsen.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20150818_capaciteit BA  harsen.pdf</li>
+007   <li><a href="file:///K:/KWLAB/analyseverslagen/20151022_776-vlampuntsdaling door toevoegen CO op L04 roetolie.docx">20151022_776-vlampuntsdaling door toevoegen CO op L04 roetolie.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20151022_776-vlampuntsdaling door toevoegen CO op L04 roetolie.pdf</li>
+008   <li><a href="file:///K:/KWLAB/analyseverslagen/20171128_Colombian tar_AnalysisResults_MetalsHigh.docx">20171128_Colombian tar_AnalysisResults_MetalsHigh.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20171128_Colombian tar_AnalysisResults_MetalsHigh.pdf</li>
+009   <li><a href="file:///K:/KWLAB/analyseverslagen/20171128_Teer ex British Steel_AnalysePekresidu.docx">20171128_Teer ex British Steel_AnalysePekresidu.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20171128_Teer ex British Steel_AnalysePekresidu.pdf</li>
+010   <li><a href="file:///K:/KWLAB/analyseverslagen/20171204_Ultra_oplosbaarheid van afzetting in pomp.docx">20171204_Ultra_oplosbaarheid van afzetting in pomp.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20171204_Ultra_oplosbaarheid van afzetting in pomp.pdf</li>
+011   <li><a href="file:///K:/KWLAB/analyseverslagen/20171204_Verlagen vlampunt van petropek met F30.docx">20171204_Verlagen vlampunt van petropek met F30.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20171204_Verlagen vlampunt van petropek met F30.pdf</li>
+012   <li><a href="file:///K:/KWLAB/analyseverslagen/20171226 - AKP - Overzicht samenstelling na gewijzigd proces.docx">20171226 - AKP - Overzicht samenstelling na gewijzigd proces.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20171226 - AKP - Overzicht samenstelling na gewijzigd proces.pdf</li>
+013   <li><a href="file:///K:/KWLAB/analyseverslagen/20171227_Severtar distillation unit, december 2017 trial.docx">20171227_Severtar distillation unit, december 2017 trial.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20171227_Severtar distillation unit, december 2017 trial.pdf</li>
+014   <li><a href="file:///K:/KWLAB/analyseverslagen/20171228_ZO dosering bij KAO om volume te maximaliseren, E29.docx">20171228_ZO dosering bij KAO om volume te maximaliseren, E29.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20171228_ZO dosering bij KAO om volume te maximaliseren, E29.pdf</li>
+015   <li><a href="file:///K:/KWLAB/analyseverslagen/20180502_ISO3679_Flashpoint_determination_of_hybrid_pitch.docx">20180502_ISO3679_Flashpoint_determination_of_hybrid_pitch.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20180502_ISO3679_Flashpoint_determination_of_hybrid_pitch.pdf</li>
+016   <li><a href="file:///K:/KWLAB/analyseverslagen/20180502_ISO3679_Flashpoint_determination_of_petro_pitch.docx">20180502_ISO3679_Flashpoint_determination_of_petro_pitch.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20180502_ISO3679_Flashpoint_determination_of_petro_pitch.pdf</li>
+017   <li><a href="file:///K:/KWLAB/analyseverslagen/20180615_ScotBremen May 2018, CSP tar, high water content.docx">20180615_ScotBremen May 2018, CSP tar, high water content.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20180615_ScotBremen May 2018, CSP tar, high water content.pdf</li>
+018   <li><a href="file:///K:/KWLAB/analyseverslagen/20180621_ISO3679_Flashpoint_determination_of_India_and_SingaporeHybridPitch.docx">20180621_ISO3679_Flashpoint_determination_of_India_and_SingaporeHybridPitch.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20180621_ISO3679_Flashpoint_determination_of_India_and_SingaporeHybridPitch.pdf</li>
+019   <li><a href="file:///K:/KWLAB/analyseverslagen/20181106_ISO3679_Flashpoint_determination_of_HybridPitch_scheduled_2018, mid Nov.docx">20181106_ISO3679_Flashpoint_determination_of_HybridPitch_scheduled_2018, mid Nov.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20181106_ISO3679_Flashpoint_determination_of_HybridPitch_scheduled_2018, mid Nov.pdf</li>
+020   <li><a href="file:///K:/KWLAB/analyseverslagen/20200109_Vlampunten (ASTM D93) van creosoot C (E29) .docx">20200109_Vlampunten (ASTM D93) van creosoot C (E29) .docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20200109_Vlampunten (ASTM D93) van creosoot C (E29) .pdf</li>
+021   <li><a href="file:///K:/KWLAB/analyseverslagen/20200129_AO2 en CrackingOlie analyse (vlampunt dens bap Herzog).docx">20200129_AO2 en CrackingOlie analyse (vlampunt dens bap Herzog).docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20200129_AO2 en CrackingOlie analyse (vlampunt dens bap Herzog).pdf</li>
+022   <li><a href="file:///K:/KWLAB/analyseverslagen/20200129_AO2 en CrackingOlie analyse (vlampunt, dens, bap, Herzog).docx">20200129_AO2 en CrackingOlie analyse (vlampunt, dens, bap, Herzog).docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20200129_AO2 en CrackingOlie analyse (vlampunt, dens, bap, Herzog).pdf</li>
+023   <li><a href="file:///K:/KWLAB/analyseverslagen/20200210_ISO3679_Flashpoint_determination_of_Pitch_T20.docx">20200210_ISO3679_Flashpoint_determination_of_Pitch_T20.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20200210_ISO3679_Flashpoint_determination_of_Pitch_T20.pdf</li>
+024   <li><a href="file:///K:/KWLAB/analyseverslagen/20200214_E21 receptwijziging_evaluatie.docx">20200214_E21 receptwijziging_evaluatie.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20200214_E21 receptwijziging_evaluatie.pdf</li>
+025   <li><a href="file:///K:/KWLAB/analyseverslagen/20201002_Coal Tar ex Argentina â€“ 5L sample received on 20200929.docx">20201002_Coal Tar ex Argentina â€“ 5L sample received on 20200929.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20201002_Coal Tar ex Argentina â€“ 5L sample received on 20200929.pdf</li>
+026   <li><a href="file:///K:/KWLAB/analyseverslagen/20210319, Bepaling â€œclosed cupâ€ vlampunten van soft pitch.docx">20210319, Bepaling â€œclosed cupâ€ vlampunten van soft pitch.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20210319, Bepaling â€œclosed cupâ€ vlampunten van soft pitch.pdf</li>
+027   <li><a href="file:///K:/KWLAB/analyseverslagen/20210325, Residu BN200 (herkomst Dow, Botlek) â€“ 2021.03 (ontvangen 25-3-2021, 40 ML sample).docx">20210325, Residu BN200 (herkomst Dow, Botlek) â€“ 2021.03 (ontvangen 25-3-2021, 40 ML sample).docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20210325, Residu BN200 (herkomst Dow, Botlek) â€“ 2021.03 (ontvangen 25-3-2021, 40 ML sample).pdf</li>
+028   <li><a href="file:///K:/KWLAB/analyseverslagen/20210331, Vergelijkende analyse van S totaal volgens ASTM D5453 op tolueen (Hemiksem opslag).docx">20210331, Vergelijkende analyse van S totaal volgens ASTM D5453 op tolueen (Hemiksem opslag).docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20210331, Vergelijkende analyse van S totaal volgens ASTM D5453 op tolueen (Hemiksem opslag).pdf</li>
+029   <li><a href="file:///K:/KWLAB/analyseverslagen/20210401, Sampling pitch according to ISO 6257.docx">20210401, Sampling pitch according to ISO 6257.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20210401, Sampling pitch according to ISO 6257.pdf</li>
+030   <li><a href="file:///K:/KWLAB/analyseverslagen/20210429, DOW PFO - kwaliteit van LPSB ex K100-bodem en PFO-LO ex K100-Top.docx">20210429, DOW PFO - kwaliteit van LPSB ex K100-bodem en PFO-LO ex K100-Top.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20210429, DOW PFO - kwaliteit van LPSB ex K100-bodem en PFO-LO ex K100-Top.pdf</li>
+031   <li><a href="file:///K:/KWLAB/analyseverslagen/20210906_ACP Highboilers staal ex Monument Chemicals.docx">20210906_ACP Highboilers staal ex Monument Chemicals.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20210906_ACP Highboilers staal ex Monument Chemicals.pdf</li>
+032   <li><a href="file:///K:/KWLAB/analyseverslagen/20211202_ISO3679_Flashpoint_determination_of_Pitch_and_Hybrid_Pitch.docx">20211202_ISO3679_Flashpoint_determination_of_Pitch_and_Hybrid_Pitch.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20211202_ISO3679_Flashpoint_determination_of_Pitch_and_Hybrid_Pitch.pdf</li>
+033   <li><a href="file:///K:/KWLAB/analyseverslagen/20211221 BTX-W101 residu (staalname tijdens stilstand 2021.11).docx">20211221 BTX-W101 residu (staalname tijdens stilstand 2021.11).docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20211221 BTX-W101 residu (staalname tijdens stilstand 2021.11).pdf</li>
+034   <li><a href="file:///K:/KWLAB/analyseverslagen/20220308_ISO3679_Flashpoint_determination_D_R_A_F_T.docx">20220308_ISO3679_Flashpoint_determination_D_R_A_F_T.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20220308_ISO3679_Flashpoint_determination_D_R_A_F_T.pdf</li>
+035   <li><a href="file:///K:/KWLAB/analyseverslagen/20220309 NOVUM, Belading TX schip dd 20220305, vervuiling waargenomen op voetstaal.docx">20220309 NOVUM, Belading TX schip dd 20220305, vervuiling waargenomen op voetstaal.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20220309 NOVUM, Belading TX schip dd 20220305, vervuiling waargenomen op voetstaal.pdf</li>
+036   <li><a href="file:///K:/KWLAB/analyseverslagen/20220406_ISO3679_Flashpoint_determination_D_R_A_F_T.docx">20220406_ISO3679_Flashpoint_determination_D_R_A_F_T.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20220406_ISO3679_Flashpoint_determination_D_R_A_F_T.pdf</li>
+037   <li><a href="file:///K:/KWLAB/analyseverslagen/20220825, KTD 30B101 vervuiling, staal van 20220823.docx">20220825, KTD 30B101 vervuiling, staal van 20220823.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20220825, KTD 30B101 vervuiling, staal van 20220823.pdf</li>
+038   <li><a href="file:///K:/KWLAB/analyseverslagen/20220825, KTD K1-LO staalname van 20220822.docx">20220825, KTD K1-LO staalname van 20220822.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20220825, KTD K1-LO staalname van 20220822.pdf</li>
+039   <li><a href="file:///K:/KWLAB/analyseverslagen/20221124 ec, Application of ASTM D4359 to evaluate state of a material, CBO.docx">20221124 ec, Application of ASTM D4359 to evaluate state of a material, CBO.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20221124 ec, Application of ASTM D4359 to evaluate state of a material, CBO.pdf</li>
+040   <li><a href="file:///K:/KWLAB/analyseverslagen/20231002, ec, FGN 50-15-15-20 Blend.docx">20231002, ec, FGN 50-15-15-20 Blend.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20231002, ec, FGN 50-15-15-20 Blend.pdf</li>
+041   <li><a href="file:///K:/KWLAB/analyseverslagen/20231023_ISO3679_Flashpoint_determination_final_report.docx">20231023_ISO3679_Flashpoint_determination_final_report.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20231023_ISO3679_Flashpoint_determination_final_report.pdf</li>
+042   <li><a href="file:///K:/KWLAB/analyseverslagen/20240117, ec, Case BIRLA FP - RoundRobin - Summary.docx">20240117, ec, Case BIRLA FP - RoundRobin - Summary.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20240117, ec, Case BIRLA FP - RoundRobin - Summary.pdf</li>
+043   <li><a href="file:///K:/KWLAB/analyseverslagen/20240119, ec, Case BIRLA FP - RoundRobin - Summary (final).docx">20240119, ec, Case BIRLA FP - RoundRobin - Summary (final).docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20240119, ec, Case BIRLA FP - RoundRobin - Summary (final).pdf</li>
+044   <li><a href="file:///K:/KWLAB/analyseverslagen/20240122, ec, Impact of PFO light oil on carbon black oil.docx">20240122, ec, Impact of PFO light oil on carbon black oil.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20240122, ec, Impact of PFO light oil on carbon black oil.pdf</li>
+045   <li><a href="file:///K:/KWLAB/analyseverslagen/20240125, ec, Case BIRLA FP - RoundRobin - Summary.docx">20240125, ec, Case BIRLA FP - RoundRobin - Summary.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20240125, ec, Case BIRLA FP - RoundRobin - Summary.pdf</li>
+046   <li><a href="file:///K:/KWLAB/analyseverslagen/20240125, ec, CR-K16 bottom sample_ElementalAnalysis.docx">20240125, ec, CR-K16 bottom sample_ElementalAnalysis.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/20240125, ec, CR-K16 bottom sample_ElementalAnalysis.pdf</li>
+047   <li><a href="file:///K:/KWLAB/analyseverslagen/295.doc">295.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/295.pdf</li>
+048   <li><a href="file:///K:/KWLAB/analyseverslagen/295_draft.doc">295_draft.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/295_draft.pdf</li>
+049   <li><a href="file:///K:/KWLAB/analyseverslagen/297.doc">297.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/297.pdf</li>
+050   <li><a href="file:///K:/KWLAB/analyseverslagen/298.doc">298.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/298.pdf</li>
+051   <li><a href="file:///K:/KWLAB/analyseverslagen/300.doc">300.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/300.pdf</li>
+052   <li><a href="file:///K:/KWLAB/analyseverslagen/302.doc">302.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/302.pdf</li>
+053   <li><a href="file:///K:/KWLAB/analyseverslagen/303.doc">303.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/303.pdf</li>
+054   <li><a href="file:///K:/KWLAB/analyseverslagen/304.doc">304.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/304.pdf</li>
+055   <li><a href="file:///K:/KWLAB/analyseverslagen/306.doc">306.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/306.pdf</li>
+056   <li><a href="file:///K:/KWLAB/analyseverslagen/307.doc">307.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/307.pdf</li>
+057   <li><a href="file:///K:/KWLAB/analyseverslagen/308.doc">308.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/308.pdf</li>
+058   <li><a href="file:///K:/KWLAB/analyseverslagen/309.doc">309.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/309.pdf</li>
+059   <li><a href="file:///K:/KWLAB/analyseverslagen/310.doc">310.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/310.pdf</li>
+060   <li><a href="file:///K:/KWLAB/analyseverslagen/311.doc">311.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/311.pdf</li>
+061   <li><a href="file:///K:/KWLAB/analyseverslagen/312.doc">312.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/312.pdf</li>
+062   <li><a href="file:///K:/KWLAB/analyseverslagen/313.doc">313.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/313.pdf</li>
+063   <li><a href="file:///K:/KWLAB/analyseverslagen/315.doc">315.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/315.pdf</li>
+064   <li><a href="file:///K:/KWLAB/analyseverslagen/316.doc">316.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/316.pdf</li>
+065   <li><a href="file:///K:/KWLAB/analyseverslagen/317.doc">317.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/317.pdf</li>
+066   <li><a href="file:///K:/KWLAB/analyseverslagen/318.doc">318.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/318.pdf</li>
+067   <li><a href="file:///K:/KWLAB/analyseverslagen/321.doc">321.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/321.pdf</li>
+068   <li><a href="file:///K:/KWLAB/analyseverslagen/324.doc">324.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/324.pdf</li>
+069   <li><a href="file:///K:/KWLAB/analyseverslagen/324_.doc">324_.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/324_.pdf</li>
+070   <li><a href="file:///K:/KWLAB/analyseverslagen/325.doc">325.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/325.pdf</li>
+071   <li><a href="file:///K:/KWLAB/analyseverslagen/326.doc">326.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/326.pdf</li>
+072   <li><a href="file:///K:/KWLAB/analyseverslagen/330.doc">330.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/330.pdf</li>
+073   <li><a href="file:///K:/KWLAB/analyseverslagen/332.doc">332.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/332.pdf</li>
+074   <li><a href="file:///K:/KWLAB/analyseverslagen/333.doc">333.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/333.pdf</li>
+075   <li><a href="file:///K:/KWLAB/analyseverslagen/336.doc">336.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/336.pdf</li>
+076   <li><a href="file:///K:/KWLAB/analyseverslagen/337.doc">337.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/337.pdf</li>
+077   <li><a href="file:///K:/KWLAB/analyseverslagen/338.doc">338.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/338.pdf</li>
+078   <li><a href="file:///K:/KWLAB/analyseverslagen/339.doc">339.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/339.pdf</li>
+079   <li><a href="file:///K:/KWLAB/analyseverslagen/340.doc">340.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/340.pdf</li>
+080   <li><a href="file:///K:/KWLAB/analyseverslagen/341.doc">341.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/341.pdf</li>
+081   <li><a href="file:///K:/KWLAB/analyseverslagen/345.doc">345.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/345.pdf</li>
+082   <li><a href="file:///K:/KWLAB/analyseverslagen/346.doc">346.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/346.pdf</li>
+083   <li><a href="file:///K:/KWLAB/analyseverslagen/347.doc">347.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/347.pdf</li>
+084   <li><a href="file:///K:/KWLAB/analyseverslagen/348.doc">348.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/348.pdf</li>
+085   <li><a href="file:///K:/KWLAB/analyseverslagen/349.doc">349.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/349.pdf</li>
+086   <li><a href="file:///K:/KWLAB/analyseverslagen/350.doc">350.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/350.pdf</li>
+087   <li><a href="file:///K:/KWLAB/analyseverslagen/351.doc">351.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/351.pdf</li>
+088   <li><a href="file:///K:/KWLAB/analyseverslagen/352.doc">352.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/352.pdf</li>
+089   <li><a href="file:///K:/KWLAB/analyseverslagen/353.doc">353.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/353.pdf</li>
+090   <li><a href="file:///K:/KWLAB/analyseverslagen/355.doc">355.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/355.pdf</li>
+091   <li><a href="file:///K:/KWLAB/analyseverslagen/357.doc">357.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/357.pdf</li>
+092   <li><a href="file:///K:/KWLAB/analyseverslagen/359.doc">359.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/359.pdf</li>
+093   <li><a href="file:///K:/KWLAB/analyseverslagen/360.doc">360.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/360.pdf</li>
+094   <li><a href="file:///K:/KWLAB/analyseverslagen/365.doc">365.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/365.pdf</li>
+095   <li><a href="file:///K:/KWLAB/analyseverslagen/372.doc">372.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/372.pdf</li>
+096   <li><a href="file:///K:/KWLAB/analyseverslagen/373 delivery report.doc">373 delivery report.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/373 delivery report.pdf</li>
+097   <li><a href="file:///K:/KWLAB/analyseverslagen/385.doc">385.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/385.pdf</li>
+098   <li><a href="file:///K:/KWLAB/analyseverslagen/386.doc">386.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/386.pdf</li>
+099   <li><a href="file:///K:/KWLAB/analyseverslagen/387.doc">387.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/387.pdf</li>
+100   <li><a href="file:///K:/KWLAB/analyseverslagen/390-Bahrein.doc">390-Bahrein.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/390-Bahrein.pdf</li>
+101   <li><a href="file:///K:/KWLAB/analyseverslagen/401.doc">401.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/401.pdf</li>
+102   <li><a href="file:///K:/KWLAB/analyseverslagen/402.doc">402.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/402.pdf</li>
+103   <li><a href="file:///K:/KWLAB/analyseverslagen/404.doc">404.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/404.pdf</li>
+104   <li><a href="file:///K:/KWLAB/analyseverslagen/411.doc">411.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/411.pdf</li>
+105   <li><a href="file:///K:/KWLAB/analyseverslagen/413.doc">413.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/413.pdf</li>
+106   <li><a href="file:///K:/KWLAB/analyseverslagen/415.doc">415.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/415.pdf</li>
+107   <li><a href="file:///K:/KWLAB/analyseverslagen/425.doc">425.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/425.pdf</li>
+108   <li><a href="file:///K:/KWLAB/analyseverslagen/426.doc">426.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/426.pdf</li>
+109   <li><a href="file:///K:/KWLAB/analyseverslagen/428.doc">428.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/428.pdf</li>
+110   <li><a href="file:///K:/KWLAB/analyseverslagen/429.doc">429.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/429.pdf</li>
+111   <li><a href="file:///K:/KWLAB/analyseverslagen/436.doc">436.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/436.pdf</li>
+112   <li><a href="file:///K:/KWLAB/analyseverslagen/442.doc">442.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/442.pdf</li>
+113   <li><a href="file:///K:/KWLAB/analyseverslagen/446.doc">446.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/446.pdf</li>
+114   <li><a href="file:///K:/KWLAB/analyseverslagen/460.doc">460.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/460.pdf</li>
+115   <li><a href="file:///K:/KWLAB/analyseverslagen/464.doc">464.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/464.pdf</li>
+116   <li><a href="file:///K:/KWLAB/analyseverslagen/466.doc">466.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/466.pdf</li>
+117   <li><a href="file:///K:/KWLAB/analyseverslagen/467_rutgersbenzolresidu.doc">467_rutgersbenzolresidu.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/467_rutgersbenzolresidu.pdf</li>
+118   <li><a href="file:///K:/KWLAB/analyseverslagen/470.doc">470.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/470.pdf</li>
+119   <li><a href="file:///K:/KWLAB/analyseverslagen/472.doc">472.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/472.pdf</li>
+120   <li><a href="file:///K:/KWLAB/analyseverslagen/473.doc">473.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/473.pdf</li>
+121   <li><a href="file:///K:/KWLAB/analyseverslagen/492.doc">492.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/492.pdf</li>
+122   <li><a href="file:///K:/KWLAB/analyseverslagen/494.doc">494.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/494.pdf</li>
+123   <li><a href="file:///K:/KWLAB/analyseverslagen/502.doc">502.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/502.pdf</li>
+124   <li><a href="file:///K:/KWLAB/analyseverslagen/507.doc">507.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/507.pdf</li>
+125   <li><a href="file:///K:/KWLAB/analyseverslagen/515.doc">515.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/515.pdf</li>
+126   <li><a href="file:///K:/KWLAB/analyseverslagen/516.doc">516.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/516.pdf</li>
+127   <li><a href="file:///K:/KWLAB/analyseverslagen/527.doc">527.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/527.pdf</li>
+128   <li><a href="file:///K:/KWLAB/analyseverslagen/528.doc">528.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/528.pdf</li>
+129   <li><a href="file:///K:/KWLAB/analyseverslagen/529-K2.doc">529-K2.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/529-K2.pdf</li>
+130   <li><a href="file:///K:/KWLAB/analyseverslagen/530-W132.doc">530-W132.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/530-W132.pdf</li>
+131   <li><a href="file:///K:/KWLAB/analyseverslagen/531.doc">531.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/531.pdf</li>
+132   <li><a href="file:///K:/KWLAB/analyseverslagen/532.doc">532.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/532.pdf</li>
+133   <li><a href="file:///K:/KWLAB/analyseverslagen/556.doc">556.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/556.pdf</li>
+134   <li><a href="file:///K:/KWLAB/analyseverslagen/567.doc">567.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/567.pdf</li>
+135   <li><a href="file:///K:/KWLAB/analyseverslagen/601.docx">601.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/601.pdf</li>
+136   <li><a href="file:///K:/KWLAB/analyseverslagen/605.docx">605.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/605.pdf</li>
+137   <li><a href="file:///K:/KWLAB/analyseverslagen/617.docx">617.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/617.pdf</li>
+138   <li><a href="file:///K:/KWLAB/analyseverslagen/624.docx">624.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/624.pdf</li>
+139   <li><a href="file:///K:/KWLAB/analyseverslagen/625-TK01.docx">625-TK01.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/625-TK01.pdf</li>
+140   <li><a href="file:///K:/KWLAB/analyseverslagen/626-TK02.docx">626-TK02.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/626-TK02.pdf</li>
+141   <li><a href="file:///K:/KWLAB/analyseverslagen/627-TK03.docx">627-TK03.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/627-TK03.pdf</li>
+142   <li><a href="file:///K:/KWLAB/analyseverslagen/628-TK04.docx">628-TK04.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/628-TK04.pdf</li>
+143   <li><a href="file:///K:/KWLAB/analyseverslagen/631.docx">631.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/631.pdf</li>
+144   <li><a href="file:///K:/KWLAB/analyseverslagen/632.doc">632.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/632.pdf</li>
+145   <li><a href="file:///K:/KWLAB/analyseverslagen/641.docx">641.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/641.pdf</li>
+146   <li><a href="file:///K:/KWLAB/analyseverslagen/649.docx">649.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/649.pdf</li>
+147   <li><a href="file:///K:/KWLAB/analyseverslagen/665.docx">665.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/665.pdf</li>
+148   <li><a href="file:///K:/KWLAB/analyseverslagen/673.docx">673.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/673.pdf</li>
+149   <li><a href="file:///K:/KWLAB/analyseverslagen/674.docx">674.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/674.pdf</li>
+150   <li><a href="file:///K:/KWLAB/analyseverslagen/697.doc">697.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/697.pdf</li>
+151   <li><a href="file:///K:/KWLAB/analyseverslagen/698.docx">698.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/698.pdf</li>
+152   <li><a href="file:///K:/KWLAB/analyseverslagen/699.doc">699.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/699.pdf</li>
+153   <li><a href="file:///K:/KWLAB/analyseverslagen/729.docx">729.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/729.pdf</li>
+154   <li><a href="file:///K:/KWLAB/analyseverslagen/730.docx">730.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/730.pdf</li>
+155   <li><a href="file:///K:/KWLAB/analyseverslagen/731.docx">731.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/731.pdf</li>
+156   <li><a href="file:///K:/KWLAB/analyseverslagen/736.docx">736.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/736.pdf</li>
+157   <li><a href="file:///K:/KWLAB/analyseverslagen/741.docx">741.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/741.pdf</li>
+158   <li><a href="file:///K:/KWLAB/analyseverslagen/765.docx">765.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/765.pdf</li>
+159   <li><a href="file:///K:/KWLAB/analyseverslagen/767.docx">767.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/767.pdf</li>
+160   <li><a href="file:///K:/KWLAB/analyseverslagen/770.docx">770.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/770.pdf</li>
+161   <li><a href="file:///K:/KWLAB/analyseverslagen/771 - Bepaling van pekdensiteit .docx">771 - Bepaling van pekdensiteit .docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/771 - Bepaling van pekdensiteit .pdf</li>
+162   <li><a href="file:///K:/KWLAB/analyseverslagen/771 analyseverslag_pekdens.docx">771 analyseverslag_pekdens.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/771 analyseverslag_pekdens.pdf</li>
+163   <li><a href="file:///K:/KWLAB/analyseverslagen/773.docx">773.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/773.pdf</li>
+164   <li><a href="file:///K:/KWLAB/analyseverslagen/774.docx">774.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/774.pdf</li>
+165   <li><a href="file:///K:/KWLAB/analyseverslagen/775.docx">775.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/775.pdf</li>
+166   <li><a href="file:///K:/KWLAB/analyseverslagen/777_LPSB_testrunCRNdestillatie_dd20151016.docx">777_LPSB_testrunCRNdestillatie_dd20151016.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/777_LPSB_testrunCRNdestillatie_dd20151016.pdf</li>
+167   <li><a href="file:///K:/KWLAB/analyseverslagen/778_COA_G01-Washoil(Rusland.docx">778_COA_G01-Washoil(Rusland.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/778_COA_G01-Washoil(Rusland.pdf</li>
+168   <li><a href="file:///K:/KWLAB/analyseverslagen/779_COA_PA_typical.docx">779_COA_PA_typical.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/779_COA_PA_typical.pdf</li>
+169   <li><a href="file:///K:/KWLAB/analyseverslagen/780.docx">780.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/780.pdf</li>
+170   <li><a href="file:///K:/KWLAB/analyseverslagen/781-bis.docx">781-bis.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/781-bis.pdf</li>
+171   <li><a href="file:///K:/KWLAB/analyseverslagen/781.docx">781.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/781.pdf</li>
+172   <li><a href="file:///K:/KWLAB/analyseverslagen/782 bis QI+TI volgens DIN51921 + ISO.docx">782 bis QI+TI volgens DIN51921 + ISO.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/782 bis QI+TI volgens DIN51921 + ISO.pdf</li>
+173   <li><a href="file:///K:/KWLAB/analyseverslagen/782 QI, vergelijking methodes  - DIN51921 versus ASTM D2318.docx">782 QI, vergelijking methodes  - DIN51921 versus ASTM D2318.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/782 QI, vergelijking methodes  - DIN51921 versus ASTM D2318.pdf</li>
+174   <li><a href="file:///K:/KWLAB/analyseverslagen/783 FZA verkleuring met SnCl2 tgv AQ.docx">783 FZA verkleuring met SnCl2 tgv AQ.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/783 FZA verkleuring met SnCl2 tgv AQ.pdf</li>
+175   <li><a href="file:///K:/KWLAB/analyseverslagen/784 Bepaling van peroxide in o-xyleen.docx">784 Bepaling van peroxide in o-xyleen.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/784 Bepaling van peroxide in o-xyleen.pdf</li>
+176   <li><a href="file:///K:/KWLAB/analyseverslagen/785 Analysis Kotka sample (flooding pitch rail car) received on 20151118.docx">785 Analysis Kotka sample (flooding pitch rail car) received on 20151118.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/785 Analysis Kotka sample (flooding pitch rail car) received on 20151118.pdf</li>
+177   <li><a href="file:///K:/KWLAB/analyseverslagen/786 Phenol determination according to DIN 38409_skalar.docx">786 Phenol determination according to DIN 38409_skalar.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/786 Phenol determination according to DIN 38409_skalar.pdf</li>
+178   <li><a href="file:///K:/KWLAB/analyseverslagen/787 GRCRN kookstoten.docx">787 GRCRN kookstoten.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/787 GRCRN kookstoten.pdf</li>
+179   <li><a href="file:///K:/KWLAB/analyseverslagen/788 - RoetolieB28_nietHomogeen.docx">788 - RoetolieB28_nietHomogeen.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/788 - RoetolieB28_nietHomogeen.pdf</li>
+180   <li><a href="file:///K:/KWLAB/analyseverslagen/788 RoetolieB28 inhomogeen.docx">788 RoetolieB28 inhomogeen.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/788 RoetolieB28 inhomogeen.pdf</li>
+181   <li><a href="file:///K:/KWLAB/analyseverslagen/789 Calibration Certificates Balance Weights Severtar.docx">789 Calibration Certificates Balance Weights Severtar.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/789 Calibration Certificates Balance Weights Severtar.pdf</li>
+182   <li><a href="file:///K:/KWLAB/analyseverslagen/790 bap bevestiging in B19-WEI B creosoot.docx">790 bap bevestiging in B19-WEI B creosoot.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/790 bap bevestiging in B19-WEI B creosoot.pdf</li>
+183   <li><a href="file:///K:/KWLAB/analyseverslagen/791 Rusland CBO target KP=60-70Â°C.docx">791 Rusland CBO target KP=60-70Â°C.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/791 Rusland CBO target KP=60-70Â°C.pdf</li>
+184   <li><a href="file:///K:/KWLAB/analyseverslagen/792 Filteraid alternatief voor mikrofill sio2 voor QI bepaling.docx">792 Filteraid alternatief voor mikrofill sio2 voor QI bepaling.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/792 Filteraid alternatief voor mikrofill sio2 voor QI bepaling.pdf</li>
+185   <li><a href="file:///K:/KWLAB/analyseverslagen/793 GC-TSD voor bepaling van N-componenten met IS.docx">793 GC-TSD voor bepaling van N-componenten met IS.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/793 GC-TSD voor bepaling van N-componenten met IS.pdf</li>
+186   <li><a href="file:///K:/KWLAB/analyseverslagen/794 - Bepaling van Bap in adheflux na productie van E22 in dezelfde kuip.docx">794 - Bepaling van Bap in adheflux na productie van E22 in dezelfde kuip.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/794 - Bepaling van Bap in adheflux na productie van E22 in dezelfde kuip.pdf</li>
+187   <li><a href="file:///K:/KWLAB/analyseverslagen/795 - [KTD] Residu W40_staal van mei 2016.docx">795 - [KTD] Residu W40_staal van mei 2016.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/795 - [KTD] Residu W40_staal van mei 2016.pdf</li>
+188   <li><a href="file:///K:/KWLAB/analyseverslagen/796 - R&K verwekingspunt variaties.docx">796 - R&K verwekingspunt variaties.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/796 - R&K verwekingspunt variaties.pdf</li>
+189   <li><a href="file:///K:/KWLAB/analyseverslagen/797 - AKP - Overzicht samenstelling.docx">797 - AKP - Overzicht samenstelling.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/797 - AKP - Overzicht samenstelling.pdf</li>
+190   <li><a href="file:///K:/KWLAB/analyseverslagen/799 - CLP definitie vloeistof.docx">799 - CLP definitie vloeistof.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/799 - CLP definitie vloeistof.pdf</li>
+191   <li><a href="file:///K:/KWLAB/analyseverslagen/802 - monster ex uitgang stoombatterij FZA2.docx">802 - monster ex uitgang stoombatterij FZA2.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/802 - monster ex uitgang stoombatterij FZA2.pdf</li>
+192   <li><a href="file:///K:/KWLAB/analyseverslagen/803 - schuimvorming MN fractie KTD.docx">803 - schuimvorming MN fractie KTD.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/803 - schuimvorming MN fractie KTD.pdf</li>
+193   <li><a href="file:///K:/KWLAB/analyseverslagen/803_schuimvormingMN_fractieKTD.docx">803_schuimvormingMN_fractieKTD.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/803_schuimvormingMN_fractieKTD.pdf</li>
+194   <li><a href="file:///K:/KWLAB/analyseverslagen/805 - Formulatie LPSB met lijnolie (nov 2016).docx">805 - Formulatie LPSB met lijnolie (nov 2016).docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/805 - Formulatie LPSB met lijnolie (nov 2016).pdf</li>
+195   <li><a href="file:///K:/KWLAB/analyseverslagen/805 - Kwaliteit CRN-ZO vergelijking 2017 januari versus 2015.docx">805 - Kwaliteit CRN-ZO vergelijking 2017 januari versus 2015.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/805 - Kwaliteit CRN-ZO vergelijking 2017 januari versus 2015.pdf</li>
+196   <li><a href="file:///K:/KWLAB/analyseverslagen/999.doc">999.doc</a> â†’ verwacht: K:/KWLAB/analyseverslagen/999.pdf</li>
+197   <li><a href="file:///K:/KWLAB/analyseverslagen/Analyse van residus gestaald in PFO K100 kolom, 20221122.docx">Analyse van residus gestaald in PFO K100 kolom, 20221122.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/Analyse van residus gestaald in PFO K100 kolom, 20221122.pdf</li>
+198   <li><a href="file:///K:/KWLAB/analyseverslagen/Audit findings regarding quality control process, final conclusions GIA-2024, 20250103.docx">Audit findings regarding quality control process, final conclusions GIA-2024, 20250103.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/Audit findings regarding quality control process, final conclusions GIA-2024, 20250103.pdf</li>
+199   <li><a href="file:///K:/KWLAB/analyseverslagen/Blend voor wasolie G0 V5 ikv leveringen aan CSP, ec, 20250115.docx">Blend voor wasolie G0 V5 ikv leveringen aan CSP, ec, 20250115.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/Blend voor wasolie G0 V5 ikv leveringen aan CSP, ec, 20250115.pdf</li>
+200   <li><a href="file:///K:/KWLAB/analyseverslagen/capaciteit BA  harsen 18022016.docx">capaciteit BA  harsen 18022016.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/capaciteit BA  harsen 18022016.pdf</li>
+201   <li><a href="file:///K:/KWLAB/analyseverslagen/CSP teerproblematiek van K0 en K1, H2O en GC, 20220912.docx">CSP teerproblematiek van K0 en K1, H2O en GC, 20220912.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/CSP teerproblematiek van K0 en K1, H2O en GC, 20220912.pdf</li>
+202   <li><a href="file:///K:/KWLAB/analyseverslagen/Density of petropitch PP, 20221006.docx">Density of petropitch PP, 20221006.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/Density of petropitch PP, 20221006.pdf</li>
+203   <li><a href="file:///K:/KWLAB/analyseverslagen/Elemental analysis of pitch with XRF.docx">Elemental analysis of pitch with XRF.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/Elemental analysis of pitch with XRF.pdf</li>
+204   <li><a href="file:///K:/KWLAB/analyseverslagen/Flash point analysis of CTP 65 and 90 Mettler, ec, 20250116.docx">Flash point analysis of CTP 65 and 90 Mettler, ec, 20250116.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/Flash point analysis of CTP 65 and 90 Mettler, ec, 20250116.pdf</li>
+205   <li><a href="file:///K:/KWLAB/analyseverslagen/NO Ham blend met PFO Baytown, 20230406, ec.docx">NO Ham blend met PFO Baytown, 20230406, ec.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/NO Ham blend met PFO Baytown, 20230406, ec.pdf</li>
+206   <li><a href="file:///K:/KWLAB/analyseverslagen/Petrocentrifugestaal van 20240531.docx">Petrocentrifugestaal van 20240531.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/Petrocentrifugestaal van 20240531.pdf</li>
+207   <li><a href="file:///K:/KWLAB/analyseverslagen/QI analyse methode, interpretatie van DIN 4188.docx">QI analyse methode, interpretatie van DIN 4188.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/QI analyse methode, interpretatie van DIN 4188.pdf</li>
+208   <li><a href="file:///K:/KWLAB/analyseverslagen/Review KTD analyseplannen, ec, 20250225.docx">Review KTD analyseplannen, ec, 20250225.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/Review KTD analyseplannen, ec, 20250225.pdf</li>
+209   <li><a href="file:///K:/KWLAB/analyseverslagen/Review spec proposal for EGA, ec, 20240814.docx">Review spec proposal for EGA, ec, 20240814.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/Review spec proposal for EGA, ec, 20240814.pdf</li>
+210   <li><a href="file:///K:/KWLAB/analyseverslagen/Round robin-Vergelijkende analyse door externe laboâ€™s van N-totaal van zuiver benzeen, ec, 20240816.docx">Round robin-Vergelijkende analyse door externe laboâ€™s van N-totaal van zuiver benzeen, ec, 20240816.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/Round robin-Vergelijkende analyse door externe laboâ€™s van N-totaal van zuiver benzeen, ec, 20240816.pdf</li>
+211   <li><a href="file:///K:/KWLAB/analyseverslagen/RTA asking about QI method bias where consistently lower values are found, ec, 20251107.docx">RTA asking about QI method bias where consistently lower values are found, ec, 20251107.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/RTA asking about QI method bias where consistently lower values are found, ec, 20251107.pdf</li>
+212   <li><a href="file:///K:/KWLAB/analyseverslagen/Samenstellingen in kader van corrosiestudie SVH, 20221006.docx">Samenstellingen in kader van corrosiestudie SVH, 20221006.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/Samenstellingen in kader van corrosiestudie SVH, 20221006.pdf</li>
+213   <li><a href="file:///K:/KWLAB/analyseverslagen/SCHUIMVORMING K510, zoektocht naar oorzaak, ec, 20241210.docx">SCHUIMVORMING K510, zoektocht naar oorzaak, ec, 20241210.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/SCHUIMVORMING K510, zoektocht naar oorzaak, ec, 20241210.pdf</li>
+214   <li><a href="file:///K:/KWLAB/analyseverslagen/~$3 - schuimvorming MN fractie KTD.docx">~$3 - schuimvorming MN fractie KTD.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/~$3 - schuimvorming MN fractie KTD.pdf</li>
+215   <li><a href="file:///K:/KWLAB/analyseverslagen/~$694.docx">~$694.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/~$694.pdf</li>
+216   <li><a href="file:///K:/KWLAB/analyseverslagen/~$ieverlies aan as van pomp 311P-B, ec, 20250530.docx">~$ieverlies aan as van pomp 311P-B, ec, 20250530.docx</a> â†’ verwacht: K:/KWLAB/analyseverslagen/~$ieverlies aan as van pomp 311P-B, ec, 20250530.pdf</li>
+217   </ul>
+218   </body></html>
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\missing_docs.json
+
+001   [
+002     {
+003       "source": "K:\\KWLAB\\analyseverslagen\\20140811_Agilent GC - analyse van KTD olies.docx",
+004       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\20140811_Agilent GC - analyse van KTD olies.pdf"
+005     },
+006     {
+007       "source": "K:\\KWLAB\\analyseverslagen\\20150811_SoftPitch_Cherepovets.docx",
+008       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\20150811_SoftPitch_Cherepovets.pdf"
+009     },
+010     {
+011       "source": "K:\\KWLAB\\analyseverslagen\\20150818_capaciteit BA  harsen.docx",
+012       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\20150818_capaciteit BA  harsen.pdf"
+013     },
+014     {
+015       "source": "K:\\KWLAB\\analyseverslagen\\20151022_776-vlampuntsdaling door toevoegen CO op L04 roetolie.docx",
+016       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\20151022_776-vlampuntsdaling door toevoegen CO op L04 roetolie.pdf"
+017     },
+018     {
+019       "source": "K:\\KWLAB\\analyseverslagen\\20171128_Colombian tar_AnalysisResults_MetalsHigh.docx",
+020       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\20171128_Colombian tar_AnalysisResults_MetalsHigh.pdf"
+021     },
+022     {
+023       "source": "K:\\KWLAB\\analyseverslagen\\20171128_Teer ex British Steel_AnalysePekresidu.docx",
+024       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\20171128_Teer ex British Steel_AnalysePekresidu.pdf"
+025     },
+026     {
+027       "source": "K:\\KWLAB\\analyseverslagen\\20171204_Ultra_oplosbaarheid van afzetting in pomp.docx",
+028       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\20171204_Ultra_oplosbaarheid van afzetting in pomp.pdf"
+029     },
+030     {
+031       "source": "K:\\KWLAB\\analyseverslagen\\20171204_Verlagen vlampunt van petropek met F30.docx",
+032       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\20171204_Verlagen vlampunt van petropek met F30.pdf"
+033     },
+034     {
+035       "source": "K:\\KWLAB\\analyseverslagen\\20171226 - AKP - Overzicht samenstelling na gewijzigd proces.docx",
+036       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\20171226 - AKP - Overzicht samenstelling na gewijzigd proces.pdf"
+037     },
+038     {
+039       "source": "K:\\KWLAB\\analyseverslagen\\20171227_Severtar distillation unit, december 2017 trial.docx",
+040       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\20171227_Severtar distillation unit, december 2017 trial.pdf"
+041     },
+042     {
+043       "source": "K:\\KWLAB\\analyseverslagen\\20171228_ZO dosering bij KAO om volume te maximaliseren, E29.docx",
+044       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\20171228_ZO dosering bij KAO om volume te maximaliseren, E29.pdf"
+045     },
+046     {
+047       "source": "K:\\KWLAB\\analyseverslagen\\~$3 - schuimvorming MN fractie KTD.docx",
+048       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\~$3 - schuimvorming MN fractie KTD.pdf"
+049     },
+050     {
+051       "source": "K:\\KWLAB\\analyseverslagen\\~$694.docx",
+052       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\~$694.pdf"
+053     },
+054     {
+055       "source": "K:\\KWLAB\\analyseverslagen\\~$ieverlies aan as van pomp 311P-B, ec, 20250530.docx",
+056       "expected_pdf": "K:\\KWLAB\\analyseverslagen\\~$ieverlies aan as van pomp 311P-B, ec, 20250530.pdf"
+057     }
+058   ]
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\test\__init__.py
+
+# [WAARSCHUWING] Kon inhoud niet lezen: C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\test\__init__.py
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\test\conftest.py
+
+001   import json
+002   from pathlib import Path
+003   import pytest
+004   
+005   from reportlab.pdfgen import canvas
+006   
+007   
+008   def make_pdf(path: Path, text: str) -> None:
+009       """Maak een kleine deterministische PDF met embedded tekst."""
+010       path.parent.mkdir(parents=True, exist_ok=True)
+011       c = canvas.Canvas(str(path))
+012       y = 800
+013       for line in text.splitlines():
+014           c.drawString(50, y, line)
+015           y -= 14
+016       c.save()
+017   
+018   
+019   @pytest.fixture()
+020   def rig(tmp_path):
+021       """
+022       Test rig:
+023       - Maakt tijdelijke PDF dataset (root-only, non-recursive)
+024       - Schrijft tijdelijke config/settings.json in project root
+025       - Herstelt originele settings.json na afloop (audit-proof voor je dev omgeving)
+026       """
+027       docs = tmp_path / "docs"
+028       scanned = tmp_path / "_gescand"
+029       db = tmp_path / "index.db"
+030       logs = tmp_path / "logs"
+031       logs.mkdir(parents=True, exist_ok=True)
+032   
+033       # 2 deterministische pdfs in ROOT (geen subfolders)
+034       make_pdf(
+035           docs / "doc1.pdf",
+036           "PCR calibratie\nPRJ-2026-01\nSMP1234\n2026-02-27\nquality control report",
+037       )
+038       make_pdf(
+039           docs / "doc2.pdf",
+040           "ISO audit procedure\nrapport toestel\nPRJ-2026-02\nSMP9999\n27/02/2026",
+041       )
+042   
+043       # tijdelijke settings.json in project/config
+044       cfg_dir = Path("config")
+045       cfg_dir.mkdir(exist_ok=True)
+046       cfg_path = cfg_dir / "settings.json"
+047   
+048       backup = cfg_path.read_text(encoding="utf-8") if cfg_path.exists() else None
+049   
+050       cfg = {
+051           "version": "1.0",
+052           "paths": {
+053               "root_locations": [str(docs)],
+054               "scanned_folder": str(scanned),
+055               "index_db": str(db),
+056               "log_folder": str(logs),
+057           },
+058           "file_handling": {
+059               "allowed_extensions": ["pdf"],
+060               "min_text_length": 20,
+061               "detect_scanned_pdf": {
+062                   "check_text_length": True,
+063                   "check_fonts": True,
+064                   "check_xobjects": True,
+065               },
+066           },
+067           "tags": {
+068               "vocabulary": ["PCR", "QC", "calibratie", "audit", "ISO", "CO2", "sample", "project", "toestel", "procedure", "rapport"],
+069               "synonyms": {"quality control": "QC", "calibration": "calibratie", "instrument": "toestel", "report": "rapport"},
+070               "max_tags_per_document": 5,
+071           },
+072           "patterns": {
+073               "project_code": r"PRJ-[0-9]{4}-[0-9]{2}",
+074               "sample_id": r"SMP[0-9]{4}",
+075               "date": r"\b(\d{4}-\d{2}-\d{2}|\d{2}/\d{2}/\d{4})\b",
+076           },
+077           "summaries": {"enabled": True, "max_sentences": 3, "use_ai_compression": False, "language_detection": True},
+078           "indexing": {"batch_size": 10, "fts5_enabled": True, "update_existing": True},
+079           "ui": {"type": "html", "preview_enabled": True, "filters_enabled": True, "max_results": 200},
+080       }
+081   
+082       cfg_path.write_text(json.dumps(cfg, indent=2), encoding="utf-8")
+083   
+084       yield {"docs": docs, "scanned": scanned, "db": db, "logs": logs}
+085   
+086       # restore settings.json
+087       if backup is None:
+088           try:
+089               cfg_path.unlink(missing_ok=True)
+090           except Exception:
+091               pass
+092       else:
+093           cfg_path.write_text(backup, encoding="utf-8")
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\test\test_pipeline.py
+
+001   import os
+002   from pathlib import Path
+003   from reportlab.pdfgen import canvas
+004   
+005   from core.indexer import index_all
+006   from core.search_api import search
+007   
+008   
+009   def make_pdf(path: Path, text: str):
+010       path.parent.mkdir(parents=True, exist_ok=True)
+011       c = canvas.Canvas(str(path))
+012       y = 800
+013       for line in text.splitlines():
+014           c.drawString(50, y, line)
+015           y -= 14
+016       c.save()
+017   
+018   
+019   def test_full_pipeline():
+020       # 1. Testdocumenten maken
+021       base = Path("C:/TEMP/fts_testdocs")
+022       make_pdf(base / "doc1.pdf",
+023                "PCR calibratie\nPRJ-2026-01\nSMP1234\n2026-02-27\nquality control report")
+024       make_pdf(base / "doc2.pdf",
+025                "ISO audit procedure\nrapport toestel\nPRJ-2026-02\nSMP9999\n27/02/2026")
+026   
+027       # 2. Index bouwen
+028       index_all()
+029   
+030       # 3. Zoeken
+031       results = search("PCR")
+032   
+033       # 4. Verwachtingen (DIT IS DE TEST)
+034       assert len(results) > 0
+035       assert any("doc1.pdf" in r["path"] for r in results)
+036   
+037   
+038   def test_metadata_quality(rig):
+039       index_all()
+040       hits = search("PCR")
+041       doc = hits[0]
+042   
+043       assert doc["title"]
+044       assert doc["summary"]
+045       assert isinstance(doc["tags"], str)
+046       assert "PRJ-2026-01" in (doc.get("project_codes") or "")
+047       assert "SMP1234" in (doc.get("sample_ids") or "")
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\test\test_pipeline_strict.py
+
+001   import sqlite3
+002   
+003   from core.indexer import index_all
+004   from core.search_api import search
+005   from test.conftest import make_pdf
+006   
+007   
+008   def test_fts5_available():
+009       cx = sqlite3.connect(":memory:")
+010       cx.execute("CREATE VIRTUAL TABLE t USING fts5(x)")
+011       cx.close()
+012   
+013   
+014   def test_index_then_search_basic(rig):
+015       """Happy path: indexeer PDF's in root en zoek op inhoud."""
+016       index_all()
+017       hits = search("PCR", limit=10)
+018       assert len(hits) >= 1
+019       assert any("doc1.pdf" in h["path"] for h in hits)
+020   
+021   
+022   def test_metadata_quality_minimum(rig):
+023       """UX minimum: title + summary + tags + pattern-extractie."""
+024       index_all()
+025       hits = search("PCR", limit=10)
+026       assert hits, "Expected at least one hit for 'PCR'"
+027   
+028       doc = next(h for h in hits if "doc1.pdf" in h["path"])
+029   
+030       assert doc.get("title"), "title must not be empty"
+031       assert doc.get("summary"), "summary must not be empty"
+032       assert isinstance(doc.get("tags"), str), "tags must be a string"
+033   
+034       assert "QC" in (doc.get("tags") or ""), "synonym 'quality control' should yield tag QC"
+035       assert "PRJ-2026-01" in (doc.get("project_codes") or "")
+036       assert "SMP1234" in (doc.get("sample_ids") or "")
+037   
+038   
+039   def test_non_recursive_scope(rig):
+040       """PDF in subfolder mag NIET geÃ¯ndexeerd worden (non-recursive)."""
+041       sub = rig["docs"] / "sub"
+042       sub.mkdir()
+043       make_pdf(sub / "hidden.pdf", "HIDDEN_TOKEN")
+044   
+045       index_all()
+046       hits = search("HIDDEN_TOKEN", limit=10)
+047       assert len(hits) == 0
+048   
+049   
+050   def test_exclusions(rig):
+051       """Excluded names mogen NIET geÃ¯ndexeerd worden: ~$*.pdf, old_*.pdf, *_draft.pdf."""
+052       make_pdf(rig["docs"] / "~$temp.pdf", "EXCLUDED_TOKEN")
+053       make_pdf(rig["docs"] / "old_report.pdf", "EXCLUDED_TOKEN")
+054       make_pdf(rig["docs"] / "report_draft.pdf", "EXCLUDED_TOKEN")
+055       make_pdf(rig["docs"] / "valid.pdf", "VALID_TOKEN extra padding text zodat lengte > 20")
+056       # make_pdf(rig["docs"] / "valid.pdf", "VALID_TOKEN")
+057   
+058       index_all()
+059   
+060       hits_valid = search("VALID_TOKEN", limit=10)
+061       assert any("valid.pdf" in h["path"] for h in hits_valid)
+062   
+063       hits_excl = search("EXCLUDED_TOKEN", limit=50)
+064       assert len(hits_excl) == 0
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\test\test_rigid_pipeline.py
+
+001   import sqlite3
+002   
+003   from core.indexer import index_all
+004   from core.search_api import search
+005   from test.conftest import _make_pdf
+006   # from test.conftest import _make_pdf
+007   
+008   
+009   def test_fts5_available():
+010       cx = sqlite3.connect(":memory:")
+011       cx.execute("CREATE VIRTUAL TABLE t USING fts5(x)")
+012       cx.close()
+013   
+014   def test_rigid_pipeline_index_then_search(rig):
+015       # 1) indexeer alles
+016       index_all()
+017   
+018       # 2) zoek op PCR (moet doc1 raken)
+019       hits = search("PCR", limit=10)
+020       assert len(hits) >= 1
+021       assert any("doc1.pdf" in h["path"] for h in hits)
+022   
+023       # 3) synonyms: "quality control" => QC tag verwacht in doc1
+024       doc1 = next(h for h in hits if "doc1.pdf" in h["path"])
+025       assert "QC" in (doc1.get("tags") or "")
+026   
+027       # 4) pattern extractie: project + sample moeten er zijn (na fix in tagger.py)
+028       assert "PRJ-2026-01" in (doc1.get("project_codes") or "")
+029       assert "SMP1234" in (doc1.get("sample_ids") or "")
+030   
+031   
+032   def test_non_recursive_scope(rig):
+033       # maak subfolder met pdf
+034       sub = rig["docs"] / "sub"
+035       sub.mkdir()
+036       _make_pdf(sub / "hidden.pdf", "PCR should NOT be indexed")
+037   
+038       index_all()
+039       hits = search("hidden")
+040       assert len(hits) == 0 
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\test\test_ui_zip.py
+
+001   import io
+002   import zipfile
+003   
+004   from core.indexer import index_all
+005   from ui.app import create_app
+006   
+007   
+008   def test_zip_endpoint_happy_path(rig):
+009       """ZIP endpoint levert een zip met gekozen PDFs (max 25)."""
+010       index_all()
+011       app = create_app()
+012       client = app.test_client()
+013   
+014       files = [str(rig["docs"] / "doc1.pdf"), str(rig["docs"] / "doc2.pdf")]
+015       resp = client.post("/zip", json={"files": files})
+016   
+017       assert resp.status_code == 200
+018       assert resp.mimetype == "application/zip"
+019   
+020       z = zipfile.ZipFile(io.BytesIO(resp.data))
+021       names = set(z.namelist())
+022       assert "doc1.pdf" in names
+023       assert "doc2.pdf" in names
+024   
+025   
+026   def test_zip_enforces_limit(rig):
+027       app = create_app()
+028       client = app.test_client()
+029   
+030       files = [str(rig["docs"] / "doc1.pdf")] * 26
+031       resp = client.post("/zip", json={"files": files})
+032       assert resp.status_code == 400
+033   
+034   
+035   def test_zip_rejects_outside_root(rig, tmp_path):
+036       """Pad buiten root_locations mag niet in zip belanden (whitelist)."""
+037       index_all()
+038       app = create_app()
+039       client = app.test_client()
+040   
+041       outside = tmp_path / "outside.pdf"
+042       outside.write_bytes(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n")
+043   
+044       files = [str(rig["docs"] / "doc1.pdf"), str(outside)]
+045       resp = client.post("/zip", json={"files": files})
+046   
+047       assert resp.status_code == 200
+048       z = zipfile.ZipFile(io.BytesIO(resp.data))
+049       names = set(z.namelist())
+050   
+051       assert "doc1.pdf" in names
+052       assert all("outside.pdf" not in n for n in names)
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\ui\app.py
+
+001   # =====================================================================
+002   # FILE: ui/app.py
+003   # DROP-IN REPLACEMENT
+004   # =====================================================================
+005   
+006   import os
+007   import io
+008   import zipfile
+009   from datetime import datetime
+010   from pathlib import Path
+011   from typing import List
+012   
+013   from flask import Flask, render_template, request, jsonify, send_file
+014   
+015   from core.search_api import search, get_document
+016   from core.config import load_settings
+017   
+018   
+019   def _log(settings, msg: str) -> None:
+020       log_dir = Path(settings.paths.log_folder)
+021       log_dir.mkdir(parents=True, exist_ok=True)
+022       with open(log_dir / "ui_server.log", "a", encoding="utf-8") as f:
+023           f.write(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {msg}\n")
+024   
+025   
+026   def _is_allowed_path(path: str, roots: List[str]) -> bool:
+027       try:
+028           p = os.path.normcase(os.path.abspath(path))
+029           for root in roots:
+030               r = os.path.normcase(os.path.abspath(root))
+031               if os.path.commonpath([p, r]) == r:
+032                   return True
+033       except Exception:
+034           pass
+035       return False
+036   
+037   
+038   def create_app() -> Flask:
+039       settings = load_settings()
+040   
+041       app = Flask(
+042           __name__,
+043           template_folder=os.path.join(os.path.dirname(__file__), "templates"),
+044           static_folder=os.path.join(os.path.dirname(__file__), "static"),
+045       )
+046   
+047       # ------------------------------------------------------------
+048       # SEARCH UI
+049       # ------------------------------------------------------------
+050       @app.route("/", methods=["GET"])
+051       def index():
+052           q = request.args.get("q", "").strip()
+053           results = search(q) if q else []
+054           if q:
+055               _log(settings, f"SEARCH q='{q}' results={len(results)}")
+056           return render_template("search.html", query=q, results=results)
+057   
+058       # ------------------------------------------------------------
+059       # DOCUMENT DETAIL
+060       # ------------------------------------------------------------
+061       @app.route("/doc/<int:doc_id>", methods=["GET"])
+062       def doc_detail(doc_id: int):
+063           doc = get_document(doc_id)
+064           if not doc:
+065               return "Document not found", 404
+066           return render_template("detail.html", doc=doc)
+067   
+068       # ------------------------------------------------------------
+069       # PDF OPEN (SERVER-SIDE, ROBUST)
+070       # ------------------------------------------------------------
+071       @app.route("/pdf/<int:doc_id>", methods=["GET"])
+072       def open_pdf(doc_id: int):
+073           doc = get_document(doc_id)
+074           if not doc or not doc.get("path"):
+075               return "Document not found", 404
+076   
+077           path = doc["path"]
+078           if not _is_allowed_path(path, settings.paths.root_locations):
+079               return "Access denied", 403
+080   
+081           _log(settings, f"OPEN_PDF id={doc_id} path={path}")
+082           return send_file(path, as_attachment=False)
+083   
+084       # ------------------------------------------------------------
+085       # ZIP DOWNLOAD (MAX 25, WHITELIST, LOGGED)
+086       # ------------------------------------------------------------
+087       @app.route("/zip", methods=["POST"])
+088       def zip_download():
+089           data = request.get_json(silent=True) or {}
+090           files = data.get("files") or []
+091   
+092           if not files:
+093               return jsonify({"error": "Geen bestanden opgegeven"}), 400
+094           if len(files) > 25:
+095               return jsonify({"error": "Max 25 bestanden toegestaan"}), 400
+096   
+097           mem = io.BytesIO()
+098           added, skipped = 0, 0
+099   
+100           with zipfile.ZipFile(mem, "w", zipfile.ZIP_DEFLATED) as z:
+101               base_root = settings.paths.root_locations[0]
+102               for f in files:
+103                   if not _is_allowed_path(f, settings.paths.root_locations):
+104                       skipped += 1
+105                       continue
+106                   if not os.path.exists(f):
+107                       skipped += 1
+108                       continue
+109   
+110                   rel = os.path.relpath(f, start=base_root)
+111                   z.write(f, arcname=rel)
+112                   added += 1
+113   
+114           mem.seek(0)
+115           _log(settings, f"ZIP files={len(files)} added={added} skipped={skipped}")
+116           return send_file(mem, mimetype="application/zip",
+117                            as_attachment=True,
+118                            download_name="documents.zip")
+119   
+120       # ------------------------------------------------------------
+121       # METADATA JSON (OPTIONEEL, KLAAR VOOR CLIENT-SIDE)
+122       # ------------------------------------------------------------
+123       @app.route("/metadata", methods=["GET"])
+124       def metadata():
+125           import sqlite3
+126           conn = sqlite3.connect(settings.paths.index_db)
+127           conn.row_factory = sqlite3.Row
+128           rows = conn.execute("""
+129               SELECT id, path, title, tags, summary,
+130                      project_codes, sample_ids, dates, mtime, ctime
+131               FROM files
+132               ORDER BY mtime DESC
+133               LIMIT 5000
+134           """).fetchall()
+135           conn.close()
+136           return jsonify([dict(r) for r in rows])
+137   
+138       return app
+139   
+140   
+141   if __name__ == "__main__":
+142       app = create_app()
+143       app.run(host="0.0.0.0", port=5000, debug=False)
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\ui\static\style.css
+
+001   body {
+002       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+003       margin: 0;
+004       padding: 0;
+005       background: #f5f5f5;
+006   }
+007   
+008   header {
+009       background: #003366;
+010       color: white;
+011       padding: 1rem;
+012   }
+013   
+014   main {
+015       padding: 1rem 2rem;
+016   }
+017   
+018   form input[type="text"] {
+019       width: 60%;
+020       padding: 0.5rem;
+021       margin-right: 0.5rem;
+022   }
+023   
+024   form button {
+025       padding: 0.5rem 1rem;
+026   }
+027   
+028   ul {
+029       list-style: none;
+030       padding-left: 0;
+031   }
+032   
+033   li {
+034       background: white;
+035       margin-bottom: 0.5rem;
+036       padding: 0.5rem;
+037       border-radius: 4px;}
+038   
+039   button { cursor: pointer; }
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\ui\templates\base.html
+
+001   <!DOCTYPE html>
+002   <html lang="nl">
+003   <head>
+004       <meta charset="UTF-8">
+005       <title>Labo Documentenzoeker</title>
+006       <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+007   </head>
+008   <body>
+009   <header>
+010       <h1>Labo Documentenzoeker</h1>
+011   </header>
+012   <main>
+013       {% block content %}{% endblock %}
+014   </main>
+015   </body>
+016   </html>
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\ui\templates\detail.html
+
+001   {% extends "base.html" %}
+002   {% block content %}
+003   <h2>{{ doc.title or doc.path }}</h2>
+004   
+005   <p><strong>Pad:</strong> {{ doc.path }}</p>
+006   <p><strong>Tags:</strong> {{ doc.tags }}</p>
+007   <p><strong>Projectcodes:</strong> {{ doc.project_codes }}</p>
+008   <p><strong>Sample-ID's:</strong> {{ doc.sample_ids }}</p>
+009   <p><strong>Datums:</strong> {{ doc.dates }}</p>
+010   
+011   <p><strong>Samenvatting:</strong><br>{{ doc.summary }}</p>
+012   
+013   <a href="{{ url_for('open_pdf', doc_id=doc.id) }}">Open PDF</a>
+014   {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+### FILENAME = C:\AUTOMATION\PYTHON\FULL_TEXT_SEARCH\ui\templates\search.html
+
+001   {% extends "base.html" %}
+002   {% block content %}
+003   
+004   <form method="get" action="/">
+005     <input type="text" name="q" value="{{ query }}" placeholder="Zoekterm (bijv. PCR AND calibratie)">
+006     <button type="submit">Zoek</button>
+007   </form>
+008   
+009   {% if query %}
+010     <h2>Resultaten voor: "{{ query }}"</h2>
+011   
+012     {% if results %}
+013       <div style="margin: 0.75rem 0;">
+014         <button type="button" onclick="selectAll(true)">Selecteer alles</button>
+015         <button type="button" onclick="selectAll(false)">Selecteer niets</button>
+016         <button type="button" onclick="downloadZip()">Download ZIP (max 25)</button>
+017         <span style="margin-left: 0.75rem;">
+018           Geselecteerd: <strong id="selCount">0</strong>
+019         </span>
+020       </div>
+021   
+022       <ul>
+023         {% for r in results %}
+024           <li style="display:flex; gap:0.6rem; align-items:flex-start; padding:0.4rem 0;">
+025             <input
+026               type="checkbox"
+027               class="zipPick"
+028               data-path="{{ r.path }}"
+029               onchange="updateCount()"
+030               aria-label="Selecteer voor ZIP"
+031             >
+032             <div>
+033               <a href="{{ url_for('doc_detail', doc_id=r.id) }}">{{ r.title or r.path }}</a><br>
+034               <small>
+035                 Tags: {{ r.tags }} |
+036                 Projecten: {{ r.project_codes }} |
+037                 Samples: {{ r.sample_ids }}
+038               </small><br>
+039               <small>{{ r.summary }}</small>
+040             </div>
+041           </li>
+042         {% endfor %}
+043       </ul>
+044   
+045       <script>
+046         function getSelectedPaths() {
+047           const boxes = Array.from(document.querySelectorAll(".zipPick"));
+048           return boxes.filter(b => b.checked).map(b => b.dataset.path);
+049         }
+050   
+051         function updateCount() {
+052           const n = getSelectedPaths().length;
+053           document.getElementById("selCount").textContent = String(n);
+054         }
+055   
+056         function selectAll(flag) {
+057           const boxes = document.querySelectorAll(".zipPick");
+058           boxes.forEach(b => b.checked = flag);
+059           updateCount();
+060         }
+061   
+062         async function downloadZip() {
+063           const files = getSelectedPaths();
+064           if (files.length === 0) {
+065             alert("Geen documenten geselecteerd.");
+066             return;
+067           }
+068           if (files.length > 25) {
+069             alert("Max 25 documenten per ZIP. Maak een kleinere selectie.");
+070             return;
+071           }
+072   
+073           const res = await fetch("/zip", {
+074             method: "POST",
+075             headers: {"Content-Type": "application/json"},
+076             body: JSON.stringify({files})
+077           });
+078   
+079           if (!res.ok) {
+080             const msg = await res.text();
+081             alert("ZIP fout: " + msg);
+082             return;
+083           }
+084   
+085           const blob = await res.blob();
+086           const url = URL.createObjectURL(blob);
+087           const a = document.createElement("a");
+088           a.href = url;
+089           a.download = "documents.zip";
+090           a.click();
+091           URL.revokeObjectURL(url);
+092         }
+093   
+094         // init count on load
+095         updateCount();
+096       </script>
+097     {% else %}
+098       <p>Geen resultaten gevonden.</p>
+099     {% endif %}
+100   {% endif %}
+101   
+102   {% endblock %}
+
+

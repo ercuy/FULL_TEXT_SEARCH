@@ -64,3 +64,19 @@ def extract_title(text: str) -> str:
         if line:
             return line[:200]
     return ""
+
+
+
+def extract_search_text(text: str, max_words: int = 400) -> str:
+    """
+    Genereer zoekbare contexttekst:
+    - geen cijfers
+    - voldoende letters
+    - beperkt aantal woorden
+    """
+    words = []
+    for token in re.findall(r"[A-Za-zÀ-ÿ]{3,}", text):
+        words.append(token.lower())
+        if len(words) >= max_words:
+            break
+    return " ".join(words)

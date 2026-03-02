@@ -1,8 +1,8 @@
 {
   "version": "1.0",
   "paths": {
-    "root_locations": ["C:\\TEMP\\fts_testdocs"],
-    "scanned_folder": "C:\\TEMP\\fts_testdocs\\_gescand",
+    "root_locations": ["K:\\KWLAB\\analyseverslagen"],
+    "scanned_folder": "K:\\KWLAB\\analyseverslagen\\_gescand",
     "index_db": "index\\index.db",
     "log_folder": "logs"
   },
@@ -16,7 +16,7 @@
     }
   },
   "tags": {
-    "vocabulary": ["PCR", "QC", "calibratie", "audit", "ISO", "sample", "project", "toestel", "procedure", "rapport"],
+    "vocabulary": ["PCR", "QC", "calibratie", "audit", "ISO", "CO2", "sample", "project", "toestel", "procedure", "rapport"],
     "synonyms": {
       "quality control": "QC",
       "calibration": "calibratie",

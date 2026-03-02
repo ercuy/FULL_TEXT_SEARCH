@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>{{ doc.title or doc.path }}</h2>
+
 <p><strong>Pad:</strong> {{ doc.path }}</p>
 <p><strong>Tags:</strong> {{ doc.tags }}</p>
 <p><strong>Projectcodes:</strong> {{ doc.project_codes }}</p>
 <p><strong>Sample-ID's:</strong> {{ doc.sample_ids }}</p>
 <p><strong>Datums:</strong> {{ doc.dates }}</p>
+
 <p><strong>Samenvatting:</strong><br>{{ doc.summary }}</p>
-<a href="file://{{ doc.path }}">Open PDF</a>
+
+<a href="{{ url_for('open_pdf', doc_id=doc.id) }}">Open PDF</a>
 {% endblock %}
