@@ -3,6 +3,7 @@
 # DROP-IN REPLACEMENT (FIXED: /help + proper Flask route converters)
 # =====================================================================
 
+from importlib.metadata import files
 import os
 import io
 import zipfile
@@ -105,23 +106,41 @@ def create_app() -> Flask:
             return jsonify({"error": "Geen bestanden opgegeven"}), 400
         if len(files) > 25:
             return jsonify({"error": "Max 25 bestanden toegestaan"}), 400
+        
+        _log(settings, f"ZIP requested files={files}")
 
         mem = io.BytesIO()
         added, skipped = 0, 0
 
         with zipfile.ZipFile(mem, "w", zipfile.ZIP_DEFLATED) as z:
-            base_root = settings.paths.root_locations[0]
+            base_root = os.path.normcase(os.path.abspath(settings.paths.root_locations[0]))
             for f in files:
-                if not _is_allowed_path(f, settings.paths.root_locations):
-                    skipped += 1
-                    continue
-                if not os.path.exists(f):
+                f_abs = os.path.normcase(os.path.abspath(f))
+
+                if not _is_allowed_path(f_abs, settings.paths.root_locations):
                     skipped += 1
                     continue
 
-                rel = os.path.relpath(f, start=base_root)
-                z.write(f, arcname=rel)
-                added += 1
+                if not os.path.exists(f_abs):
+                    skipped += 1
+                    continue
+
+                rel = os.path.relpath(f_abs, start=base_root)
+                z.write(f_abs, arcname=rel)
+                added += 1            
+
+            # base_root = settings.paths.root_locations[0]
+            # for f in files:
+            #     if not _is_allowed_path(f, settings.paths.root_locations):
+            #         skipped += 1
+            #         continue
+            #     if not os.path.exists(f):
+            #         skipped += 1
+            #         continue
+
+            #     rel = os.path.relpath(f, start=base_root)
+            #     z.write(f, arcname=rel)
+            #     added += 1
 
         mem.seek(0)
         _log(settings, f"ZIP files={len(files)} added={added} skipped={skipped}")

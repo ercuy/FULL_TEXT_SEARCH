@@ -53,7 +53,7 @@ def _connect() -> sqlite3.Connection:
     conn.row_factory = sqlite3.Row
     return conn
 
-def search(query: str, limit: int = 50) -> List[Dict[str, Any]]:
+def search(query: str, limit: int = 500) -> List[Dict[str, Any]]:
     settings = load_settings()
     limit = min(limit, settings.ui.max_results)
     conn = _connect()

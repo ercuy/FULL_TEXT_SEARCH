@@ -45,6 +45,6 @@
     "type": "html",
     "preview_enabled": true,
     "filters_enabled": true,
-    "max_results": 200
+    "max_results": 1000
   }
 }
