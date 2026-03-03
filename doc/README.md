@@ -324,4 +324,4 @@ SQLite Browser toont rijen in files en files_fts
 
 UI starten
 
- python -m ui.app     
+ python -m ui.app
