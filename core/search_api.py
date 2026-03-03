@@ -107,3 +107,22 @@ def get_document(doc_id: int) -> Dict[str, Any]:
         return dict(row) if row else {}
     finally:
         conn.close()
+
+
+
+def get_index_last_update() -> str:
+    """
+    Geeft de laatste update van de index terug op basis van metadata.
+    Retourneert lege string als index leeg is.
+    """
+    conn = _connect()
+    try:
+        row = conn.execute(
+            "SELECT MAX(mtime) AS last_mtime FROM files"
+        ).fetchone()
+        if not row or not row["last_mtime"]:
+            return ""
+        from datetime import datetime
+        return datetime.fromtimestamp(row["last_mtime"]).strftime("%Y-%m-%d %H:%M")
+    finally:
+        conn.close()

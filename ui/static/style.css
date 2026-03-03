@@ -37,3 +37,21 @@ li {
     border-radius: 4px;}
 
 button { cursor: pointer; }
+
+.help-icon {
+  font-size: 1.4rem;
+  color: white;
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.help-icon:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.index-update {
+  margin: 0.6rem 0 1rem 0;
+  font-size: 0.85rem;
+  color: #444;
+}

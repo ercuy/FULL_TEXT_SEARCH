@@ -12,9 +12,9 @@ from pathlib import Path
 from typing import List
 
 from flask import Flask, render_template, request, jsonify, send_file
-
 from core.search_api import search, get_document
 from core.config import load_settings
+from core.search_api import search, get_document, get_index_last_update
 
 
 def _log(settings, msg: str) -> None:
@@ -64,9 +64,25 @@ def create_app() -> Flask:
     def index():
         q = request.args.get("q", "").strip()
         results = search(q) if q else []
+
+        last_update = get_index_last_update()
+
         if q:
             _log(settings, f"SEARCH q='{q}' results={len(results)}")
-        return render_template("search.html", query=q, results=results)
+
+        return render_template(
+            "search.html",
+            query=q,
+            results=results,
+            last_update=last_update,
+        )
+    
+    # def index():
+    #     q = request.args.get("q", "").strip()
+    #     results = search(q) if q else []
+    #     if q:
+    #         _log(settings, f"SEARCH q='{q}' results={len(results)}")
+    #     return render_template("search.html", query=q, results=results)
 
     # ------------------------------------------------------------
     # DOCUMENT DETAIL

@@ -2,9 +2,20 @@
 {% block content %}
 
 <form method="get" action="/">
-  <input type="text" name="q" value="{{ query }}" placeholder="Zoekterm (bijv. PCR AND calibratie)">
+  <input
+    type="text"
+    name="q"
+    value="{{ query }}"
+    placeholder="Zoekterm (bijv. PCR AND calibratie)"
+  >
   <button type="submit">Zoek</button>
 </form>
+
+{% if last_update %}
+  <p class="index-update">
+    📅 Index – laatste update: {{ last_update }}
+  </p>
+{% endif %}
 
 {% if query %}
   <h2>Resultaten voor: "{{ query }}"</h2>
@@ -30,7 +41,9 @@
             aria-label="Selecteer voor ZIP"
           >
           <div>
-            <a href="{{ url_for('doc_detail', doc_id=r.id) }}">{{ r.title or r.path }}</a><br>
+            <a href="{{ url_for('doc_detail', doc_id=r.id) }}">
+              {{ r.title or r.path }}
+            </a><br>
             <small>
               Tags: {{ r.tags }} |
               Projecten: {{ r.project_codes }} |
@@ -75,12 +88,6 @@
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify({files})
         });
-        
-        if (!res.ok) {
-          const msg = await res.text();
-          alert("ZIP fout: " + msg);
-          return;
-        }        
 
         if (!res.ok) {
           const msg = await res.text();
